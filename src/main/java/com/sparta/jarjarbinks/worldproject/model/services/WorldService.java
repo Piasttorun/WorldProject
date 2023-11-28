@@ -19,4 +19,22 @@ public class WorldService {
         this.countryRepository = countryRepository;
         this.countrylanguageRepository = countrylanguageRepository;
     }
+
+    //Which countries have no Head of State?
+
+
+    //What percentage of a given countries population lives in its largest city
+
+
+    //Which country has the most cities? How many cites does it have?
+
+
+    //which 5 districts have the smallest population?
+
+
+    //For a given country, approximately how many people speak its most popular official language?
+
+
+
+
 }

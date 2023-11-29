@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,34 @@ public class WorldService {
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
         this.countrylanguageRepository = countrylanguageRepository;
+    }
+
+    //Create methods...
+    public CityDTO createCity(CityDTO cityDTO) {
+        cityRepository.save(cityDTO);
+        return cityDTO;
+    }
+
+    public CountryDTO createCountry(CountryDTO countryDTO) {
+        countryRepository.save(countryDTO);
+        return countryDTO;
+    }
+
+    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) {
+        countrylanguageRepository.save(countrylanguageDTO);
+        return countrylanguageDTO;
+    }
+
+    public Optional<CityDTO> getCityById(Integer id) {
+        return cityRepository.findById(id);
+    }
+
+    public Optional<CountryDTO> getCountryByCode(String code) {
+        return countryRepository.findById(code);
+    }
+
+    public Optional<CountrylanguageDTO> getCountrylanguageById(CountrylanguageIdDTO id) {
+        return countrylanguageRepository.findById(id);
     }
 
     public Optional<CityDTO> putCity(CityDTO newCity, Integer id) {
@@ -124,6 +153,17 @@ public class WorldService {
     //which 5 districts have the smallest population? Bianca
   
     //For a given country, approximately how many people speak its most popular official language?Affiq
+
+    //For a given country, approximately how many people speak its most popular official language?
+    public Integer NumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
+        List<CountrylanguageDTO> spokenLanguages
+                = countrylanguageRepository.findAllByCountryCodeAndOrderByPercentageDesc(countryDTO);
+
+        BigDecimal percentage = spokenLanguages.get(0).getPercentage();
+
+        return  percentage.multiply(BigDecimal.valueOf(countryDTO.getPopulation())).intValue();
+    }
+
 
     public void deleteCity(Integer id){
         cityRepository.deleteById(id);

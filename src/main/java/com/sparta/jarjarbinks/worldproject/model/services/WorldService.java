@@ -24,7 +24,8 @@ public class WorldService {
         this.countrylanguageRepository = countrylanguageRepository;
     }
 
-    //Which countries have no Head of State?
+    //Which countries have no Head of State? Fergus
+
 
 
     //What percentage of a given countries population lives in its largest city - uyi
@@ -38,17 +39,15 @@ public class WorldService {
                 largestCity = city;
             }
         }
-
         return (largestCity.getPopulation() / country.getPopulation()) * 100;
     }
 
-    //Which country has the most cities? How many cites does it have?
+    //Which country has the most cities? How many cites does it have? Mateusz
 
 
-    //which 5 districts have the smallest population?
-
-
-    //For a given country, approximately how many people speak its most popular official language?
+    //which 5 districts have the smallest population? Bianca
+  
+    //For a given country, approximately how many people speak its most popular official language?Affiq
 
     public void deleteCity(Integer id){
         cityRepository.deleteById(id);
@@ -60,5 +59,4 @@ public class WorldService {
     public void deleteCountryLanguage(Integer id){
         countrylanguageRepository.deleteById(id);
     }
-    
 }

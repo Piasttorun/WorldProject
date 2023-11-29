@@ -1,10 +1,16 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
+import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Optional;
 
 @Service
 public class WorldService {
@@ -18,6 +24,40 @@ public class WorldService {
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
         this.countrylanguageRepository = countrylanguageRepository;
+    }
+
+    public Optional<CityDTO> putCity(CityDTO newCity, Integer id) {
+
+        Optional<CityDTO> existingCity = cityRepository.findById(id);
+
+        Optional<CityDTO> result = Optional.empty();
+
+        if (existingCity.isPresent()) {
+            CityDTO cityToPut = existingCity.get();
+            cityToPut = newCity;
+            cityToPut.setId(id);
+            cityRepository.save(cityToPut);
+        }
+
+        return result;
+
+    }
+
+    public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) {
+
+        Optional<CountryDTO> existingCountry = countryRepository.findById(code);
+
+        Optional<CountryDTO> result = Optional.empty();
+
+        if (existingCountry.isPresent()) {
+            CountryDTO countryToPut = existingCountry.get();
+            countryToPut = newCountry;
+            countryToPut.setCode(code);
+            countryRepository.save(countryToPut);
+        }
+
+        return result;
+
     }
 
     //Which countries have no Head of State? Fergus

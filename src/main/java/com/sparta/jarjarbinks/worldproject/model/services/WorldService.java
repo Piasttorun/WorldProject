@@ -2,6 +2,8 @@ package com.sparta.jarjarbinks.worldproject.model.services;
 
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
@@ -59,6 +61,25 @@ public class WorldService {
         return result;
 
     }
+
+    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) {
+
+        Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
+
+        Optional<CountrylanguageDTO> result = Optional.empty();
+
+        if (existingCountryLanguage.isPresent()) {
+            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+            countryLanguageToPut = newCountryLanguage;
+            countryLanguageToPut.setId(id);
+            countrylanguageRepository.save(countryLanguageToPut);
+        }
+
+        return result;
+
+    }
+
+
 
     //Which countries have no Head of State? Fergus
 

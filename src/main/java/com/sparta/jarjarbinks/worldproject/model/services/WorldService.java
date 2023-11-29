@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,6 +84,21 @@ public class WorldService {
 
 
     //Which countries have no Head of State? Fergus
+
+    public List<CountryDTO> getCountriesNoHeadOfState() {
+
+        List<CountryDTO> countriesWithNoHeadOfState = new ArrayList<>();
+        List<CountryDTO> countriesList = countryRepository.findAll();
+
+        for (CountryDTO country : countriesList) {
+            if (country.getHeadOfState().isEmpty()) {
+                countriesWithNoHeadOfState.add(country);
+            }
+        }
+
+        return countriesWithNoHeadOfState;
+
+    }
 
 
     //What percentage of a given countries population lives in its largest city Uyi

@@ -77,13 +77,33 @@ public class WorldController {
 
     // Special case methods
 
-    @GetMapping()
+    // fergus
+    @GetMapping("/countriesNoHeadOfState")
     public Optional<CountryDTO> countriesNoHeadOfState() {
         return null;
     }
 
-    @GetMapping()
+    // uyi
+    @GetMapping("/percentagePopulationLargestCity")
     public Float percentagePopulationLargestCity() {
+        return null;
+    }
+
+    // mati
+    @GetMapping("/countryMostCities")
+    public CountryDTO countryMostCities() {
+        return null;
+    }
+
+    // bianca
+    @GetMapping("/citiesSmallestPopulation")
+    public List<CountryDTO> citiesSmallestPopulation() {
+        return null;
+    }
+
+    // affiq
+    @GetMapping("/citiesSmallestPopulation/{id}")
+    public Integer SpeakMostPopularLanguage(@PathVariable Integer id) {
         return null;
     }
 }

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CountrylanguageRepository extends JpaRepository<CountrylanguageDTO, CountrylanguageIdDTO> {
+
+    void deleteById(Integer id);
 }

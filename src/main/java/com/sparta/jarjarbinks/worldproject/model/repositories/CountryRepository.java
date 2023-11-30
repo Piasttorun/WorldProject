@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface CountryRepository extends JpaRepository<CountryDTO, String> {
 
-    public List<CountryDTO> findByCode(String countryCode);
+    public CountryDTO findByCode(String countryCode);
 
 }

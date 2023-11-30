@@ -170,7 +170,7 @@ public class WorldService {
     }
 
     //What percentage of a given countries population lives in its largest city - uyi
-    public int getPercentagePopulationLargestCity(CountryDTO country){
+    public double getPercentagePopulationLargestCity(CountryDTO country){
         List<CityDTO> cities = cityRepository.findAllByCountryCode(country);
         CityDTO largestCity = cities.get(0);
 

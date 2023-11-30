@@ -83,25 +83,25 @@ public class WorldController {
     // fergus
     @GetMapping("/countriesNoHeadOfState")
     public Optional<CountryDTO> countriesNoHeadOfState() {
-        return null;
+        return countriesNoHeadOfState();
     }
 
     // uyi
-    @GetMapping("/percentagePopulationLargestCity")
-    public Float percentagePopulationLargestCity() {
-        return null;
+    @PostMapping("/percentagePopulationLargestCity}")
+    public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
+        return worldService.getPercentagePopulationLargestCity(newCountry);
     }
 
     // mati
     @GetMapping("/countryMostCities")
     public CountryDTO countryMostCities() {
-        return null;
+        return worldService.getCountryMostCities();
     }
 
     // bianca
     @GetMapping("/citiesSmallestPopulation")
-    public List<CountryDTO> citiesSmallestPopulation() {
-        return null;
+    public List<String> districtSmallestPopulation() {
+        return worldService.getSmallestPopulationDistricts();
     }
 
     // affiq

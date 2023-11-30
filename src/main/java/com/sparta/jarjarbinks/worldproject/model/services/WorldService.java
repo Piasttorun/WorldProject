@@ -139,8 +139,7 @@ public class WorldService {
 
     //What percentage of a given countries population lives in its largest city - uyi
     public int getPercentagePopulationLargestCity(CountryDTO country){
-        int countryCode = Integer.parseInt(country.getCode());
-        List<CityDTO> cities = cityRepository.findCityDTOByCountryCode(countryCode);
+        List<CityDTO> cities = cityRepository.findAllByCountryCode(country);
         CityDTO largestCity = cities.get(0);
 
         for(CityDTO city: cities){
@@ -184,11 +183,11 @@ public class WorldService {
     //For a given country, approximately how many people speak its most popular official language?Affiq
 
     //For a given country, approximately how many people speak its most popular official language?
-    public Integer NumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
+    public Integer getNumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
         List<CountrylanguageDTO> spokenLanguages
-                = countrylanguageRepository.findAllByCountryCodeAndOrderByPercentageDesc(countryDTO);
+                = countrylanguageRepository.findAllByCountryCodeOrderByPercentageDesc(countryDTO);
 
-        BigDecimal percentage = spokenLanguages.get(0).getPercentage();
+        BigDecimal percentage = spokenLanguages.get(0).getPercentage().divide(new BigDecimal(100));
 
         return  percentage.multiply(BigDecimal.valueOf(countryDTO.getPopulation())).intValue();
     }
@@ -201,7 +200,7 @@ public class WorldService {
         countryRepository.deleteById(id.toString());
     }
 
-    public void deleteCountryLanguage(Integer id){
-        countrylanguageRepository.deleteById(id);
+    public void deleteCountryLanguage(CountrylanguageIdDTO countrylanguageIdDTO){
+        countrylanguageRepository.deleteById(countrylanguageIdDTO);
     }
 }

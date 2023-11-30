@@ -6,7 +6,10 @@ import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 public class TestController {
@@ -20,12 +23,15 @@ public class TestController {
         this.countryRepository = countryRepository;
     }
 
-    @GetMapping("/test")
-    public void TestEndPoint() {
-        CountryDTO countryDTO = countryRepository.findAll().get(0);
-        System.out.println("Country: " + countryDTO.getName());
-        System.out.println("Number of people: " + worldService.getNumberOfPopularLanguageSpeakers(countryDTO));
-
+    @GetMapping("/test/{countrycode}")
+    public int TestEndPoint(@PathVariable String countrycode) {
+        Optional<CountryDTO> country = worldService.getCountryByCode(countrycode);
+        if (country.isEmpty()) {
+            // Throw exception
+            return 0;
+        } else {
+            return worldService.getNumberOfPopularLanguageSpeakers(country.get());
+        }
     }
 
 }

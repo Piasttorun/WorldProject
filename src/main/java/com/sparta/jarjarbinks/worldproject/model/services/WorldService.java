@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
+import com.sparta.jarjarbinks.worldproject.exceptions.ConflictingIDException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
@@ -38,19 +39,32 @@ public class WorldService {
     }
 
     //Create methods...
-    public CityDTO createCity(CityDTO cityDTO) {
-        cityRepository.save(cityDTO);
-        return cityDTO;
+    public CityDTO createCity(CityDTO cityDTO) throws ConflictingIDException {
+        if (cityRepository.findById(cityDTO.getId()).isPresent()) {
+            throw new ConflictingIDException(cityDTO.getId().toString());
+        } else {
+            cityRepository.save(cityDTO);
+            return cityDTO;
+        }
     }
 
-    public CountryDTO createCountry(CountryDTO countryDTO) {
-        countryRepository.save(countryDTO);
-        return countryDTO;
+    public CountryDTO createCountry(CountryDTO countryDTO) throws ConflictingIDException {
+
+        if (countryRepository.findById(countryDTO.getCode()).isPresent()) {
+            throw new ConflictingIDException(countryDTO.getCode());
+        } else {
+            countryRepository.save(countryDTO);
+            return countryDTO;
+        }
     }
 
-    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) {
-        countrylanguageRepository.save(countrylanguageDTO);
-        return countrylanguageDTO;
+    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) throws ConflictingIDException {
+        if (countrylanguageRepository.findById(countrylanguageDTO.getId()).isPresent()) {
+            throw new ConflictingIDException(countrylanguageDTO.getId().toString());
+        } else {
+            countrylanguageRepository.save(countrylanguageDTO);
+            return countrylanguageDTO;
+        }
     }
 
     public Optional<CityDTO> getCityById(Integer id) {

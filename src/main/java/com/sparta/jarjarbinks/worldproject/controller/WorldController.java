@@ -23,6 +23,7 @@ public class WorldController {
 
     @DeleteMapping("/city/{id}")
     public void deleteCity(@PathVariable Integer id) {
+        deleteCity(id);
     }
 
     @PostMapping("/city")
@@ -41,6 +42,7 @@ public class WorldController {
 
     @DeleteMapping("/country/{id}")
     public void deleteCountry(@PathVariable Integer id) {
+        deleteCountry(id);
     }
 
     @PostMapping("/country")
@@ -58,7 +60,8 @@ public class WorldController {
     }
 
     @DeleteMapping("/country_language/{id}")
-    public void deleteCountryLanguage(@PathVariable Integer id) {
+    public void deleteCountryLanguage(@PathVariable String id) {
+        deleteCountryLanguage(id);
     }
 
     @PostMapping("/country_language")

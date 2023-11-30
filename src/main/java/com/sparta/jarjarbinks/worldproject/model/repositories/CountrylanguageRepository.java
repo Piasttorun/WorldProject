@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CountrylanguageRepository extends JpaRepository<CountrylanguageDTO, CountrylanguageIdDTO> {
-
-    void deleteById(CountrylanguageIdDTO countrylanguageIdDTO);
+//    List<CountrylanguageDTO> findAllBy
     List<CountrylanguageDTO> findAllByCountryCodeOrderByPercentageDesc(CountryDTO countryDTO);
 }
 

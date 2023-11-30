@@ -137,7 +137,7 @@ public class WorldService {
         }
     }
 
-    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
+    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
 
         if (id == null) {
             throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
@@ -170,7 +170,7 @@ public class WorldService {
     }
 
     //What percentage of a given countries population lives in its largest city - uyi
-    public int getPercentagePopulationLargestCity(CountryDTO country){
+    public double getPercentagePopulationLargestCity(CountryDTO country){
         List<CityDTO> cities = cityRepository.findAllByCountryCode(country);
         CityDTO largestCity = cities.get(0);
 

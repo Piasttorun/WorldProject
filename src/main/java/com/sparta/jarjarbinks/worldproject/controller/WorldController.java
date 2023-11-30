@@ -37,7 +37,7 @@ public class WorldController {
 
     @PatchMapping("/city/{id}")
     public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCity(newCity, id);
     }
 
     @DeleteMapping("/country/{id}")
@@ -56,7 +56,7 @@ public class WorldController {
 
     @PatchMapping("/country/{id}")
     public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCountry(newCity, id);
     }
 
     @DeleteMapping("/country_language/{id}")
@@ -75,7 +75,7 @@ public class WorldController {
 
     @PatchMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCountryLanguage(newCity, id);
     }
 
     // Special case methods

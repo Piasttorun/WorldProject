@@ -187,7 +187,13 @@ public class WorldService {
         cityRepository.deleteById(id);
     }
     public void deleteCountry(Integer id){
-        countryRepository.deleteById(id.toString());
+        Optional<CountryDTO> thisCountry = countryRepository.findById(id.toString());
+        List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
+
+        if(thisCountry.isPresent()){
+            countryRepository.delete(thisCountry);
+            cityRepository.deleteAllByCountryCode(thisCountry);
+        }
     }
 
     public void deleteCountryLanguage(CountrylanguageIdDTO countrylanguageIdDTO){

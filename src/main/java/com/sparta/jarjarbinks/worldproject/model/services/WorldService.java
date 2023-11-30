@@ -104,7 +104,7 @@ public class WorldService {
         }
     }
 
-    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
+    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
 
         if (id == null) {
             throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");

@@ -1,6 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
-import com.sparta.jarjarbinks.worldproject.exceptions.ConflictingIDException;
+import com.sparta.jarjarbinks.worldproject.exceptions.AlreadyExistsException;
 import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
 import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
@@ -11,17 +11,12 @@ import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveRepositoriesAutoConfiguration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import java.util.List;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,28 +36,28 @@ public class WorldService {
     }
 
     //Create methods...
-    public CityDTO createCity(CityDTO cityDTO) throws ConflictingIDException {
+    public CityDTO createCity(CityDTO cityDTO) throws AlreadyExistsException {
         if (cityRepository.findById(cityDTO.getId()).isPresent()) {
-            throw new ConflictingIDException(cityDTO.getId().toString());
+            throw new AlreadyExistsException(cityDTO.getId().toString());
         } else {
             cityRepository.save(cityDTO);
             return cityDTO;
         }
     }
 
-    public CountryDTO createCountry(CountryDTO countryDTO) throws ConflictingIDException {
+    public CountryDTO createCountry(CountryDTO countryDTO) throws AlreadyExistsException {
 
         if (countryRepository.findById(countryDTO.getCode()).isPresent()) {
-            throw new ConflictingIDException(countryDTO.getCode());
+            throw new AlreadyExistsException(countryDTO.getCode());
         } else {
             countryRepository.save(countryDTO);
             return countryDTO;
         }
     }
 
-    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) throws ConflictingIDException {
+    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) throws AlreadyExistsException {
         if (countrylanguageRepository.findById(countrylanguageDTO.getId()).isPresent()) {
-            throw new ConflictingIDException(countrylanguageDTO.getId().toString());
+            throw new AlreadyExistsException(countrylanguageDTO.getId().toString());
         } else {
             countrylanguageRepository.save(countrylanguageDTO);
             return countrylanguageDTO;
@@ -86,7 +81,7 @@ public class WorldService {
             return Optional.empty();
         }
     }
-    
+
     public List<CountryDTO> getCountry() {
         try {
             return countryRepository.findAll();
@@ -150,14 +145,14 @@ public class WorldService {
 
         Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
 
-            if (existingCountryLanguage.isPresent()) {
-                CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
-                countryLanguageToPut.setId(newCountryLanguage.getId());
-                countrylanguageRepository.save(countryLanguageToPut);
-                return Optional.of(countryLanguageToPut);
-            } else {
-                throw new NotFoundException("Error: Country Language not found");
-            }
+        if (existingCountryLanguage.isPresent()) {
+            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+            countryLanguageToPut.setId(newCountryLanguage.getId());
+            countrylanguageRepository.save(countryLanguageToPut);
+            return Optional.of(countryLanguageToPut);
+        } else {
+            throw new NotFoundException("Error: Country Language not found");
+        }
     }
 
     //Which countries have no Head of State? Fergus
@@ -174,8 +169,6 @@ public class WorldService {
         return countriesWithNoHeadOfState;
     }
 
-
-
     //What percentage of a given countries population lives in its largest city - uyi
     public int getPercentagePopulationLargestCity(CountryDTO country){
         List<CityDTO> cities = cityRepository.findAllByCountryCode(country);
@@ -191,6 +184,7 @@ public class WorldService {
 
     //Which country has the most cities? How many cites does it have? Mateusz
     public CountryDTO getCountryMostCities() {
+
         int freq = 0;
         String res = "";
 
@@ -228,8 +222,6 @@ public class WorldService {
     }
 
     //For a given country, approximately how many people speak its most popular official language?Affiq
-
-    //For a given country, approximately how many people speak its most popular official language?
     public Integer getNumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
 
         if (countryRepository.findByCode(countryDTO.getCode()) {

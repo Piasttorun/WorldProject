@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
+import com.sparta.jarjarbinks.worldproject.exceptions.AlreadyExistsException;
 import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
 import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
@@ -10,17 +11,12 @@ import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveRepositoriesAutoConfiguration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import java.util.List;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,31 +36,68 @@ public class WorldService {
     }
 
     //Create methods...
-    public CityDTO createCity(CityDTO cityDTO) {
-        cityRepository.save(cityDTO);
-        return cityDTO;
+    public CityDTO createCity(CityDTO cityDTO) throws AlreadyExistsException {
+        if (cityRepository.findById(cityDTO.getId()).isPresent()) {
+            throw new AlreadyExistsException(cityDTO.getId().toString());
+        } else {
+            cityRepository.save(cityDTO);
+            return cityDTO;
+        }
     }
 
-    public CountryDTO createCountry(CountryDTO countryDTO) {
-        countryRepository.save(countryDTO);
-        return countryDTO;
+    public CountryDTO createCountry(CountryDTO countryDTO) throws AlreadyExistsException {
+
+        if (countryRepository.findById(countryDTO.getCode()).isPresent()) {
+            throw new AlreadyExistsException(countryDTO.getCode());
+        } else {
+            countryRepository.save(countryDTO);
+            return countryDTO;
+        }
     }
 
-    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) {
-        countrylanguageRepository.save(countrylanguageDTO);
-        return countrylanguageDTO;
+    public CountrylanguageDTO createCountryLanguage(CountrylanguageDTO countrylanguageDTO) throws AlreadyExistsException {
+        if (countrylanguageRepository.findById(countrylanguageDTO.getId()).isPresent()) {
+            throw new AlreadyExistsException(countrylanguageDTO.getId().toString());
+        } else {
+            countrylanguageRepository.save(countrylanguageDTO);
+            return countrylanguageDTO;
+        }
     }
 
     public Optional<CityDTO> getCityById(Integer id) {
-        return cityRepository.findById(id);
+        try {
+            return cityRepository.findById(id);
+        } catch (Exception e) {
+            System.err.println("Failed to get city by ID: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
-    public Optional<CountryDTO> getCountryByCode(String code) {
-        return countryRepository.findById(code);
+    public Optional<CountryDTO> getCountryById(String code) {
+        try {
+            return countryRepository.findById(code);
+        } catch (Exception e) {
+            System.err.println("Failed to get country by ID: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    public List<CountryDTO> getCountry() {
+        try {
+            return countryRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Failed to get all countries: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
     public Optional<CountrylanguageDTO> getCountrylanguageById(CountrylanguageIdDTO id) {
-        return countrylanguageRepository.findById(id);
+        try {
+            return countrylanguageRepository.findById(id);
+        } catch (Exception e) {
+            System.err.println("Failed to get country language by ID: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
     public Optional<CityDTO> putCity(CityDTO newCity, Integer id) throws InvalidArgumentFormatException, NotFoundException {
@@ -112,14 +145,14 @@ public class WorldService {
 
         Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
 
-            if (existingCountryLanguage.isPresent()) {
-                CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
-                countryLanguageToPut.setId(newCountryLanguage.getId());
-                countrylanguageRepository.save(countryLanguageToPut);
-                return Optional.of(countryLanguageToPut);
-            } else {
-                throw new NotFoundException("Error: Country Language not found");
-            }
+        if (existingCountryLanguage.isPresent()) {
+            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+            countryLanguageToPut.setId(newCountryLanguage.getId());
+            countrylanguageRepository.save(countryLanguageToPut);
+            return Optional.of(countryLanguageToPut);
+        } else {
+            throw new NotFoundException("Error: Country Language not found");
+        }
     }
 
     //Which countries have no Head of State? Fergus
@@ -136,8 +169,6 @@ public class WorldService {
         return countriesWithNoHeadOfState;
     }
 
-
-
     //What percentage of a given countries population lives in its largest city - uyi
     public int getPercentagePopulationLargestCity(CountryDTO country){
         List<CityDTO> cities = cityRepository.findAllByCountryCode(country);
@@ -153,6 +184,7 @@ public class WorldService {
 
     //Which country has the most cities? How many cites does it have? Mateusz
     public CountryDTO getCountryMostCities() {
+
         int freq = 0;
         String res = "";
 
@@ -180,19 +212,21 @@ public class WorldService {
 
     //which 5 districts have the smallest population? Bianca
     public List<String> getSmallestPopulationDistricts() {
-        List<CityDTO> cities = cityRepository.findAll();
+        try {
+            List<CityDTO> cities = cityRepository.findAll();
 
-        return cities.stream()
-                .sorted(Comparator.comparing(CityDTO::getPopulation))
-                .limit(5)
-                .map(CityDTO::getDistrict)
-                .collect(Collectors.toList());
+            return cities.stream()
+                    .sorted(Comparator.comparing(CityDTO::getPopulation))
+                    .limit(5)
+                    .map(CityDTO::getDistrict)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.err.println("Failed to get smallest population districts: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
-
     //For a given country, approximately how many people speak its most popular official language?Affiq
-
-    //For a given country, approximately how many people speak its most popular official language?
     public Integer getNumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
         List<CountrylanguageDTO> spokenLanguages
                 = countrylanguageRepository.findAllByCountryCodeOrderByPercentageDesc(countryDTO);
@@ -202,20 +236,48 @@ public class WorldService {
         return  percentage.multiply(BigDecimal.valueOf(countryDTO.getPopulation())).intValue();
     }
 
-    public void deleteCity(Integer id){
-        cityRepository.deleteById(id);
+    public void deleteCity(Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        if(id == null){
+            throw new InvalidArgumentFormatException("Invalid input into deleteCity method");
+        }
+        if(cityRepository.findById(id).isEmpty()){
+            throw new NotFoundException("This city could not be found.");
+        }else {
+            cityRepository.deleteById(id);
+        }
     }
-    public void deleteCountry(Integer id){
-        Optional<CountryDTO> thisCountry = countryRepository.findById(id.toString());
-        List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
+    public void deleteCountry(Integer countryId) throws InvalidArgumentFormatException, NotFoundException {
 
-        if(thisCountry.isPresent()){
+        if(countryId == null){
+            throw new InvalidArgumentFormatException("Invalid input into deleteCountry method");
+        }
+
+        if(countryRepository.findById(countryId.toString()).isEmpty()){
+            throw new NotFoundException("This Country could not be found.");
+        } else {
+            Optional<CountryDTO> thisCountry = countryRepository.findById(countryId.toString());
+            List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
             countryRepository.delete(thisCountry);
             cityRepository.deleteAllByCountryCode(thisCountry);
         }
+
     }
 
-    public void deleteCountryLanguage(CountrylanguageIdDTO countrylanguageIdDTO){
-        countrylanguageRepository.deleteById(countrylanguageIdDTO);
+    public void deleteCountryLanguage(String language) throws InvalidArgumentFormatException, NotFoundException {
+        if(language == null){
+            throw new InvalidArgumentFormatException("Invalid language was entered make sure the language is Capitalized");
+        }
+        int count = 0;
+
+        List<CountrylanguageDTO> languages = countrylanguageRepository.findAll();
+        for(CountrylanguageDTO country: languages){
+            if(country.getId().getLanguage().equals(language)){
+                countrylanguageRepository.delete(country);
+                count++;
+            }
+        }
+        if (count == 0){
+            throw new NotFoundException("The Language " + language + " could not be found.");
+        }
     }
 }

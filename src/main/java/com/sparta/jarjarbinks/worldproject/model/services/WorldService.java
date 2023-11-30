@@ -231,6 +231,11 @@ public class WorldService {
 
     //For a given country, approximately how many people speak its most popular official language?
     public Integer getNumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
+
+        if (countryRepository.findByCode(countryDTO.getCode()) {
+            throw new NotFoundException();
+        }
+
         List<CountrylanguageDTO> spokenLanguages
                 = countrylanguageRepository.findAllByCountryCodeOrderByPercentageDesc(countryDTO);
 

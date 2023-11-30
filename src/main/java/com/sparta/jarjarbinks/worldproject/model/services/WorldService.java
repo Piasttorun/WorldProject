@@ -170,7 +170,17 @@ public class WorldService {
 
 
     //which 5 districts have the smallest population? Bianca
-  
+    public List<String> getSmallestPopulationDistricts() {
+        List<CityDTO> cities = cityRepository.findAll();
+
+        return cities.stream()
+                .sorted(Comparator.comparing(CityDTO::getPopulation))
+                .limit(5)
+                .map(CityDTO::getDistrict)
+                .collect(Collectors.toList());
+    }
+
+
     //For a given country, approximately how many people speak its most popular official language?Affiq
 
     //For a given country, approximately how many people speak its most popular official language?

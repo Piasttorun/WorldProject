@@ -14,3 +14,6 @@ public interface CountrylanguageRepository extends JpaRepository<Countrylanguage
     void deleteById(CountrylanguageIdDTO countrylanguageIdDTO);
     List<CountrylanguageDTO> findAllByCountryCodeOrderByPercentageDesc(CountryDTO countryDTO);
 }
+
+
+    

@@ -77,9 +77,7 @@ public class WorldService {
             cityToPut.setId(id);
             cityRepository.save(cityToPut);
         }
-
         return result;
-
     }
 
     public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) {
@@ -96,7 +94,6 @@ public class WorldService {
         }
 
         return result;
-
     }
 
     public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) {
@@ -113,13 +110,9 @@ public class WorldService {
         }
 
         return result;
-
     }
 
-
-
     //Which countries have no Head of State? Fergus
-
     public List<CountryDTO> getCountriesNoHeadOfState() {
 
         List<CountryDTO> countriesWithNoHeadOfState = new ArrayList<>();
@@ -132,7 +125,6 @@ public class WorldService {
         }
 
         return countriesWithNoHeadOfState;
-
     }
 
 
@@ -151,7 +143,6 @@ public class WorldService {
     }
 
     //Which country has the most cities? How many cites does it have? Mateusz
-
     public CountryDTO getCountryMostCities() {
         int freq = 0;
         String res = "";
@@ -191,7 +182,6 @@ public class WorldService {
 
         return  percentage.multiply(BigDecimal.valueOf(countryDTO.getPopulation())).intValue();
     }
-
 
     public void deleteCity(Integer id){
         cityRepository.deleteById(id);

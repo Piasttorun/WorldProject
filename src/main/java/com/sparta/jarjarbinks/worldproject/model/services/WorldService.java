@@ -1,5 +1,7 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
+import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
+import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
@@ -65,50 +67,72 @@ public class WorldService {
         return countrylanguageRepository.findById(id);
     }
 
-    public Optional<CityDTO> putCity(CityDTO newCity, Integer id) {
+    public Optional<CityDTO> putCity(CityDTO newCity, Integer id) throws InvalidArgumentFormatException, NotFoundException {
 
         Optional<CityDTO> existingCity = cityRepository.findById(id);
 
         Optional<CityDTO> result = Optional.empty();
 
-        if (existingCity.isPresent()) {
-            CityDTO cityToPut = existingCity.get();
-            cityToPut = newCity;
-            cityToPut.setId(id);
-            cityRepository.save(cityToPut);
+        if (id instanceof Integer) {
+
+            if (existingCity.isPresent()) {
+                CityDTO cityToPut = existingCity.get();
+                cityToPut = newCity;
+                cityToPut.setId(id);
+                cityRepository.save(cityToPut);
+                result = Optional.of(cityToPut);
+            } else {
+                throw new NotFoundException("Error: City not found");
+            }
+        } else {
+            throw new InvalidArgumentFormatException("Invalid input format, please enter an Integer");
         }
         return result;
     }
 
-    public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) {
+    public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) throws InvalidArgumentFormatException, NotFoundException {
 
         Optional<CountryDTO> existingCountry = countryRepository.findById(code);
 
         Optional<CountryDTO> result = Optional.empty();
 
-        if (existingCountry.isPresent()) {
-            CountryDTO countryToPut = existingCountry.get();
-            countryToPut = newCountry;
-            countryToPut.setCode(code);
-            countryRepository.save(countryToPut);
-        }
+        if (code instanceof String) {
 
+            if (existingCountry.isPresent()) {
+                CountryDTO countryToPut = existingCountry.get();
+                countryToPut = newCountry;
+                countryToPut.setCode(code);
+                countryRepository.save(countryToPut);
+                result = Optional.of(countryToPut);
+            } else {
+                throw new NotFoundException("Error: Country not found");
+            }
+        } else {
+            throw new InvalidArgumentFormatException("Invalid input format, please enter a String");
+        }
         return result;
     }
 
-    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) {
+    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
 
         Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
 
         Optional<CountrylanguageDTO> result = Optional.empty();
 
-        if (existingCountryLanguage.isPresent()) {
-            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
-            countryLanguageToPut = newCountryLanguage;
-            countryLanguageToPut.setId(id);
-            countrylanguageRepository.save(countryLanguageToPut);
-        }
+        if (id instanceof CountrylanguageIdDTO) {
 
+            if (existingCountryLanguage.isPresent()) {
+                CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+                countryLanguageToPut = newCountryLanguage;
+                countryLanguageToPut.setId(id);
+                countrylanguageRepository.save(countryLanguageToPut);
+                result = Optional.of(countryLanguageToPut);
+            } else {
+                throw new NotFoundException("Error: Country Language not found");
+            }
+        } else {
+            throw new InvalidArgumentFormatException("Invalid input format, please enter a Country Language ID");
+        }
         return result;
     }
 
@@ -123,7 +147,6 @@ public class WorldService {
                 countriesWithNoHeadOfState.add(country);
             }
         }
-
         return countriesWithNoHeadOfState;
     }
 

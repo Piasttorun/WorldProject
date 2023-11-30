@@ -23,6 +23,7 @@ public class WorldController {
 
     @DeleteMapping("/city/{id}")
     public void deleteCity(@PathVariable Integer id) {
+        deleteCity(id);
     }
 
     @PostMapping("/city")
@@ -36,11 +37,12 @@ public class WorldController {
 
     @PatchMapping("/city/{id}")
     public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCity(newCity, id);
     }
 
     @DeleteMapping("/country/{id}")
     public void deleteCountry(@PathVariable Integer id) {
+        deleteCountry(id);
     }
 
     @PostMapping("/country")
@@ -54,11 +56,12 @@ public class WorldController {
 
     @PatchMapping("/country/{id}")
     public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCountry(newCity, id);
     }
 
     @DeleteMapping("/country_language/{id}")
-    public void deleteCountryLanguage(@PathVariable Integer id) {
+    public void deleteCountryLanguage(@PathVariable String id) {
+        deleteCountryLanguage(id);
     }
 
     @PostMapping("/country_language")
@@ -72,7 +75,7 @@ public class WorldController {
 
     @PatchMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newCity, @PathVariable Integer id) {
-        return null;
+        return patchCountryLanguage(newCity, id);
     }
 
     // Special case methods
@@ -80,25 +83,25 @@ public class WorldController {
     // fergus
     @GetMapping("/countriesNoHeadOfState")
     public Optional<CountryDTO> countriesNoHeadOfState() {
-        return null;
+        return countriesNoHeadOfState();
     }
 
     // uyi
-    @GetMapping("/percentagePopulationLargestCity")
-    public Float percentagePopulationLargestCity() {
-        return null;
+    @PostMapping("/percentagePopulationLargestCity}")
+    public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
+        return worldService.getPercentagePopulationLargestCity(newCountry);
     }
 
     // mati
     @GetMapping("/countryMostCities")
     public CountryDTO countryMostCities() {
-        return null;
+        return worldService.getCountryMostCities();
     }
 
     // bianca
     @GetMapping("/citiesSmallestPopulation")
-    public List<CountryDTO> citiesSmallestPopulation() {
-        return null;
+    public List<String> districtSmallestPopulation() {
+        return worldService.getSmallestPopulationDistricts();
     }
 
     // affiq

@@ -180,7 +180,6 @@ public class WorldService {
                 .collect(Collectors.toList());
     }
 
-
     //For a given country, approximately how many people speak its most popular official language?Affiq
 
     //For a given country, approximately how many people speak its most popular official language?

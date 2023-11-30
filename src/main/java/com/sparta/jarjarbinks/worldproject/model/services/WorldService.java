@@ -1,6 +1,8 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
 import com.sparta.jarjarbinks.worldproject.exceptions.ConflictingIDException;
+import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
+import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
@@ -79,51 +81,59 @@ public class WorldService {
         return countrylanguageRepository.findById(id);
     }
 
-    public Optional<CityDTO> putCity(CityDTO newCity, Integer id) {
+    public Optional<CityDTO> putCity(CityDTO newCity, Integer id) throws InvalidArgumentFormatException, NotFoundException {
+
+        if (id == null || id < 1 || id > 500) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be within the range of 1-500");
+        }
 
         Optional<CityDTO> existingCity = cityRepository.findById(id);
 
-        Optional<CityDTO> result = Optional.empty();
-
         if (existingCity.isPresent()) {
             CityDTO cityToPut = existingCity.get();
-            cityToPut = newCity;
-            cityToPut.setId(id);
+            cityToPut.setId(newCity.getId());
             cityRepository.save(cityToPut);
+            return Optional.of(cityToPut);
+        } else {
+            throw new NotFoundException("Error: City not found");
         }
-        return result;
     }
 
-    public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) {
+
+    public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) throws InvalidArgumentFormatException, NotFoundException {
+
+        if (code == null || code.length() != 3) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
+        }
 
         Optional<CountryDTO> existingCountry = countryRepository.findById(code);
 
-        Optional<CountryDTO> result = Optional.empty();
-
         if (existingCountry.isPresent()) {
             CountryDTO countryToPut = existingCountry.get();
-            countryToPut = newCountry;
-            countryToPut.setCode(code);
+            countryToPut.setCode(newCountry.getCode());
             countryRepository.save(countryToPut);
+            return Optional.of(countryToPut);
+        } else {
+            throw new NotFoundException("Error: Country not found");
         }
-
-        return result;
     }
 
-    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) {
+    public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
+
+        if (id == null) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
+        }
 
         Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
 
-        Optional<CountrylanguageDTO> result = Optional.empty();
-
-        if (existingCountryLanguage.isPresent()) {
-            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
-            countryLanguageToPut = newCountryLanguage;
-            countryLanguageToPut.setId(id);
-            countrylanguageRepository.save(countryLanguageToPut);
-        }
-
-        return result;
+            if (existingCountryLanguage.isPresent()) {
+                CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+                countryLanguageToPut.setId(newCountryLanguage.getId());
+                countrylanguageRepository.save(countryLanguageToPut);
+                return Optional.of(countryLanguageToPut);
+            } else {
+                throw new NotFoundException("Error: Country Language not found");
+            }
     }
 
     //Which countries have no Head of State? Fergus
@@ -137,7 +147,6 @@ public class WorldService {
                 countriesWithNoHeadOfState.add(country);
             }
         }
-
         return countriesWithNoHeadOfState;
     }
 
@@ -207,20 +216,48 @@ public class WorldService {
         return  percentage.multiply(BigDecimal.valueOf(countryDTO.getPopulation())).intValue();
     }
 
-    public void deleteCity(Integer id){
-        cityRepository.deleteById(id);
+    public void deleteCity(Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        if(id == null){
+            throw new InvalidArgumentFormatException("Invalid input into deleteCity method");
+        }
+        if(cityRepository.findById(id).isEmpty()){
+            throw new NotFoundException("This city could not be found.");
+        }else {
+            cityRepository.deleteById(id);
+        }
     }
-    public void deleteCountry(Integer id){
-        Optional<CountryDTO> thisCountry = countryRepository.findById(id.toString());
-        List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
+    public void deleteCountry(Integer countryId) throws InvalidArgumentFormatException, NotFoundException {
 
-        if(thisCountry.isPresent()){
+        if(countryId == null){
+            throw new InvalidArgumentFormatException("Invalid input into deleteCountry method");
+        }
+
+        if(countryRepository.findById(countryId.toString()).isEmpty()){
+            throw new NotFoundException("This Country could not be found.");
+        } else {
+            Optional<CountryDTO> thisCountry = countryRepository.findById(countryId.toString());
+            List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
             countryRepository.delete(thisCountry);
             cityRepository.deleteAllByCountryCode(thisCountry);
         }
+
     }
 
-    public void deleteCountryLanguage(CountrylanguageIdDTO countrylanguageIdDTO){
-        countrylanguageRepository.deleteById(countrylanguageIdDTO);
+    public void deleteCountryLanguage(String language) throws InvalidArgumentFormatException, NotFoundException {
+        if(language == null){
+            throw new InvalidArgumentFormatException("Invalid language was entered make sure the language is Capitalized");
+        }
+        int count = 0;
+
+        List<CountrylanguageDTO> languages = countrylanguageRepository.findAll();
+        for(CountrylanguageDTO country: languages){
+            if(country.getId().getLanguage().equals(language)){
+                countrylanguageRepository.delete(country);
+                count++;
+            }
+        }
+        if (count == 0){
+            throw new NotFoundException("The Language " + language + " could not be found.");
+        }
     }
 }

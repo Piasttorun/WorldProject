@@ -14,7 +14,7 @@ public class NotFoundAdvice {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> NotFoundHandler(NotFoundException e) {
-        NotFoundResponse response = new NotFoundResponse(e.getMessage(), 400);
+        NotFoundResponse response = new NotFoundResponse(e.getMessage(), 407);
         return ResponseEntity.badRequest().body(String.valueOf(response));
     }
 }

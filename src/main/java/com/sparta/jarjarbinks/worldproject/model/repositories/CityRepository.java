@@ -15,7 +15,6 @@ public interface CityRepository extends JpaRepository<CityDTO, Integer> {
 
     List<CityDTO> findAllByCountryCode(CountryDTO countryDTO);
     List<CityDTO> findAllByCountryCode(Optional<CountryDTO> countryDTO);
-
     void deleteAllByCountryCode(Optional<CountryDTO> countryDTO);
 
 }

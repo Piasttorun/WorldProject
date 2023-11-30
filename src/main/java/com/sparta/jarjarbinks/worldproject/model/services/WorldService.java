@@ -54,15 +54,39 @@ public class WorldService {
     }
 
     public Optional<CityDTO> getCityById(Integer id) {
-        return cityRepository.findById(id);
+        try {
+            return cityRepository.findById(id);
+        } catch (Exception e) {
+            System.err.println("Failed to get city by ID: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
-    public Optional<CountryDTO> getCountryByCode(String code) {
-        return countryRepository.findById(code);
+    public Optional<CountryDTO> getCountryById(String code) {
+        try {
+            return countryRepository.findById(code);
+        } catch (Exception e) {
+            System.err.println("Failed to get country by ID: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+    
+    public List<CountryDTO> getCountry() {
+        try {
+            return countryRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Failed to get all countries: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
     public Optional<CountrylanguageDTO> getCountrylanguageById(CountrylanguageIdDTO id) {
-        return countrylanguageRepository.findById(id);
+        try {
+            return countrylanguageRepository.findById(id);
+        } catch (Exception e) {
+            System.err.println("Failed to get country language by ID: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
     public Optional<CityDTO> putCity(CityDTO newCity, Integer id) {

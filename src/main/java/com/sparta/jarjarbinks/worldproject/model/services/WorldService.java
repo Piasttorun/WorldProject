@@ -69,71 +69,57 @@ public class WorldService {
 
     public Optional<CityDTO> putCity(CityDTO newCity, Integer id) throws InvalidArgumentFormatException, NotFoundException {
 
+        if (id == null || id < 1 || id > 500) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be within the range of 1-500");
+        }
+
         Optional<CityDTO> existingCity = cityRepository.findById(id);
 
-        Optional<CityDTO> result = Optional.empty();
-
-        if (id instanceof Integer) {
-
-            if (existingCity.isPresent()) {
-                CityDTO cityToPut = existingCity.get();
-                cityToPut = newCity;
-                cityToPut.setId(id);
-                cityRepository.save(cityToPut);
-                result = Optional.of(cityToPut);
-            } else {
-                throw new NotFoundException("Error: City not found");
-            }
+        if (existingCity.isPresent()) {
+            CityDTO cityToPut = existingCity.get();
+            cityToPut.setId(newCity.getId());
+            cityRepository.save(cityToPut);
+            return Optional.of(cityToPut);
         } else {
-            throw new InvalidArgumentFormatException("Invalid input format, please enter an Integer");
+            throw new NotFoundException("Error: City not found");
         }
-        return result;
     }
+
 
     public Optional<CountryDTO> putCountry(CountryDTO newCountry, String code) throws InvalidArgumentFormatException, NotFoundException {
 
+        if (code == null || code.length() != 3) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
+        }
+
         Optional<CountryDTO> existingCountry = countryRepository.findById(code);
 
-        Optional<CountryDTO> result = Optional.empty();
-
-        if (code instanceof String) {
-
-            if (existingCountry.isPresent()) {
-                CountryDTO countryToPut = existingCountry.get();
-                countryToPut = newCountry;
-                countryToPut.setCode(code);
-                countryRepository.save(countryToPut);
-                result = Optional.of(countryToPut);
-            } else {
-                throw new NotFoundException("Error: Country not found");
-            }
+        if (existingCountry.isPresent()) {
+            CountryDTO countryToPut = existingCountry.get();
+            countryToPut.setCode(newCountry.getCode());
+            countryRepository.save(countryToPut);
+            return Optional.of(countryToPut);
         } else {
-            throw new InvalidArgumentFormatException("Invalid input format, please enter a String");
+            throw new NotFoundException("Error: Country not found");
         }
-        return result;
     }
 
     public Optional<CountrylanguageDTO> patchCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
 
+        if (id == null) {
+            throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
+        }
+
         Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
-
-        Optional<CountrylanguageDTO> result = Optional.empty();
-
-        if (id instanceof CountrylanguageIdDTO) {
 
             if (existingCountryLanguage.isPresent()) {
                 CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
-                countryLanguageToPut = newCountryLanguage;
-                countryLanguageToPut.setId(id);
+                countryLanguageToPut.setId(newCountryLanguage.getId());
                 countrylanguageRepository.save(countryLanguageToPut);
-                result = Optional.of(countryLanguageToPut);
+                return Optional.of(countryLanguageToPut);
             } else {
                 throw new NotFoundException("Error: Country Language not found");
             }
-        } else {
-            throw new InvalidArgumentFormatException("Invalid input format, please enter a Country Language ID");
-        }
-        return result;
     }
 
     //Which countries have no Head of State? Fergus

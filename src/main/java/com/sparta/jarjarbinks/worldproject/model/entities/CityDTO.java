@@ -53,7 +53,7 @@ public class CityDTO {
         return countryCode;
     }
 
-    public void setCountryCode(CountryDTO countryCode) {
+    public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
 

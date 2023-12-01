@@ -258,7 +258,18 @@ public class WorldService {
             countryRepository.deleteCountryDTOByCode(thisCountry.get().getCode());
             cityRepository.deleteAllByCountryCode(thisCountry);
         }
+    }
 
+    public void deleteCountry(String country) throws InvalidArgumentFormatException, NotFoundException {
+        if (country.isEmpty()){
+            throw new InvalidArgumentFormatException("Invalid input into deleteCountry method");
+        }
+
+        if(countryRepository.findAllByName(country).isEmpty()){
+            throw new NotFoundException("This Country could not be found.");
+        } else {
+            countryRepository.deleteAllByName(country);
+        }
     }
 
     public void deleteCountryLanguage(String language) throws InvalidArgumentFormatException, NotFoundException {

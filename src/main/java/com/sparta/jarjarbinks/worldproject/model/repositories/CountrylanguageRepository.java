@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface CountrylanguageRepository extends JpaRepository<CountrylanguageDTO, CountrylanguageIdDTO> {
 //    List<CountrylanguageDTO> findAllBy
     List<CountrylanguageDTO> findAllByCountryCodeOrderByPercentageDesc(CountryDTO countryDTO);
+    CountrylanguageDTO findCountrylanguageDTOById(CountrylanguageIdDTO countrylanguageIdDTO);
 }
 
 

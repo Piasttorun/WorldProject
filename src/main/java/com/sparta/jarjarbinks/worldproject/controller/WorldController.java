@@ -31,8 +31,8 @@ public class WorldController {
     }
 
     @GetMapping("/city")
-    public Optional<CityDTO> getCity() {
-        return null;
+    public Optional<CityDTO> getCityById(@PathVariable Integer id) {
+        return worldService.getCityById(id);
     }
 
     @PatchMapping("/city/{id}")
@@ -49,9 +49,9 @@ public class WorldController {
     public void createCountry(@RequestBody CountryDTO newCity) {
     }
 
-    @GetMapping("/country")
-    public Optional<CountryDTO> getCountry() {
-        return null;
+    @GetMapping("/country/{code}")
+    public Optional<CountryDTO> getCountryById(@PathVariable String code) {
+        return worldService.getCountryById(code);
     }
 
     @PatchMapping("/country/{id}")
@@ -69,8 +69,8 @@ public class WorldController {
     }
 
     @GetMapping("/country_language")
-    public Optional<CountrylanguageDTO> getCountryLanguage() {
-        return null;
+    public List<CountrylanguageDTO> getCountryLanguage() {
+        return worldService.getAllCountryLanguages();
     }
 
     @PatchMapping("/country_language/{id}")

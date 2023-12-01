@@ -285,4 +285,13 @@ public class WorldService {
             throw new NotFoundException("The Language " + language + " could not be found.");
         }
     }
+
+    public List<CountrylanguageDTO> getAllCountryLanguages() {
+        try {
+            return countrylanguageRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Failed to get all country languages: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
 }

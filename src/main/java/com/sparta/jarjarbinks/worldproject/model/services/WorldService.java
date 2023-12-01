@@ -6,7 +6,6 @@ import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
-import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
@@ -131,7 +130,7 @@ public class WorldService {
         }
     }
 
-    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageIdDTO id) throws InvalidArgumentFormatException, NotFoundException {
+    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, Integer id) throws InvalidArgumentFormatException, NotFoundException {
 
         if (id == null) {
             throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");

@@ -210,28 +210,15 @@ public class WorldService {
     //Which country has the most cities? How many cites does it have? Mateusz
     public CountryDTO getCountryMostCities() {
 
-        int freq = 0;
-        String res = "";
-
-        ArrayList<String> temp = new ArrayList<>();
-        for (CityDTO city : cityRepository.findAll()) {
-            temp.add(String.valueOf(city.getCountryCode()));
-        }
-        for (int i = 0; i < temp.size(); i++) {
-            int count = 0;
-            for (int j = i + 1; j < temp.size(); j++) {
-                if (temp.get(j) == temp.get(i)) {
-                    count++;
-                }
-            }
-            // updating our max freq of occurred string in the
-            // array of strings
-            if (count >= freq) {
-                res = temp.get(i);
-                freq = count;
+        int currentLargestAmount = 0;
+        CountryDTO currentLargestCountry = null;
+        for (CountryDTO country : countryRepository.findAll()) {
+            if (country.getCities().size() > currentLargestAmount) {
+                currentLargestAmount = country.getCities().size();
+                currentLargestCountry = country;
             }
         }
-        return countryRepository.findByCode(res).get();
+        return currentLargestCountry;
     }
 
 

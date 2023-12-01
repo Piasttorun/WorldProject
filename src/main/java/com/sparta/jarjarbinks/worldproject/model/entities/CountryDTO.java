@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "country", schema = "world")
@@ -70,6 +71,18 @@ public class CountryDTO {
     @NotNull
     @Column(name = "Code2", nullable = false, length = 2)
     private String code2;
+
+    //@OneToMany(mappedBy = "name", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "countryCode", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<CityDTO> cities;
+
+    public List<CityDTO> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<CityDTO> cities) {
+        this.cities = cities;
+    }
 
     public String getCode() {
         return code;

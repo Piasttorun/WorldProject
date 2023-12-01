@@ -110,15 +110,16 @@ public class WorldController {
     }
 
     // uyi
-    @PostMapping("/percentagePopulationLargestCity")
+    @GetMapping("/percentagePopulationLargestCity")
     public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
         return worldService.getPercentagePopulationLargestCity(newCountry);
     }
 
     // mati
     @GetMapping("/countryMostCities")
-    public CountryDTO countryMostCities() {
-        return worldService.getCountryMostCities();
+    public String countryMostCities() {
+        CountryDTO city = worldService.getCountryMostCities();
+        return "City name: " + city.getName() + " and amount: " + city.getCities().size() + ".";
     }
 
     // bianca

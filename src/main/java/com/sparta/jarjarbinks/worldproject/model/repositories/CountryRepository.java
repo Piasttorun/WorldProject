@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CountryRepository extends JpaRepository<CountryDTO, String> {
 
-    public CountryDTO findByCode(String countryCode);
+    public Optional<CountryDTO> findByCode(String countryCode);
 
 
     void delete(Optional<CountryDTO> thisCountry);

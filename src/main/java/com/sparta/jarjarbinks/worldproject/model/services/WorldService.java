@@ -206,7 +206,7 @@ public class WorldService {
                 freq = count;
             }
         }
-        return countryRepository.findByCode(res);
+        return countryRepository.findByCode(res).get();
     }
 
 
@@ -227,7 +227,12 @@ public class WorldService {
     }
 
     //For a given country, approximately how many people speak its most popular official language?Affiq
-    public Integer getNumberOfPopularLanguageSpeakers(CountryDTO countryDTO) {
+    public Integer getNumberOfPopularLanguageSpeakers(String countryCode) throws NotFoundException {
+
+        if (countryRepository.findByCode(countryCode).isEmpty()) {
+            throw new NotFoundException("Country code not found");
+        }
+        CountryDTO countryDTO = countryRepository.findByCode(countryCode).get();
         List<CountrylanguageDTO> spokenLanguages
                 = countrylanguageRepository.findAllByCountryCodeOrderByPercentageDesc(countryDTO);
 

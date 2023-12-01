@@ -4,6 +4,7 @@ import com.sparta.jarjarbinks.worldproject.controller.WorldController;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,38 +33,40 @@ public class MockDeleteTests {
     void testDeleteCity() throws Exception {
         CityDTO mockCity = new CityDTO();
         mockCity.setName("Heaven");
+        mockCity.setId(1);
 
-
-        Mockito.when(worldController.getCountryById(null)).thenReturn(new ArrayList<>(List.of(mockCountry)));
+        Mockito.when(worldController.getCityById(null)).thenReturn(new ArrayList<>(List.of(mockCity)));
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/Heaven"))
+                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/city/1"))
                 .andExpect(status().is(200));
-        //.andExpect(content().toString().contains("Mock Man!!"));
     }
+
     @Test
     @DisplayName("Test Delete Country")
     void testDeleteCountry() throws Exception {
         CountryDTO mockCountry = new CountryDTO();
         mockCountry.setName("Heaven");
+        mockCountry.setCode("1");
 
 
-        Mockito.when(worldController.getCountryById(null)).thenReturn(new ArrayList<>(List.of(mockCountry)));
+        Mockito.when(worldController.getCountryById("")).thenReturn(new ArrayList<>(List.of(mockCountry)));
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/Heaven"))
+                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/1"))
                 .andExpect(status().is(200));
-        //.andExpect(content().toString().contains("Mock Man!!"));
+
     }
 
     @Test
     @DisplayName("Test Delete Language")
     void testDeleteLanguage() throws Exception {
         CountrylanguageDTO mockLanguage =  new CountrylanguageDTO();
+        CountrylanguageIdDTO Help = new CountrylanguageIdDTO();
+        mockLanguage.setId(Help);
 
-
-        Mockito.when(worldController.getCountryById(null)).thenReturn(new ArrayList<>(List.of(mockCountry)));
+        Mockito.when(worldController.getCountryLanguage()).thenReturn(new ArrayList<>(List.of(mockLanguage)));
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/Heaven"))
+                .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country_language"))
                 .andExpect(status().is(200));
-        //.andExpect(content().toString().contains("Mock Man!!"));
+
     }
 }

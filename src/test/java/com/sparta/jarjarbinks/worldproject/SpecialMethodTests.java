@@ -76,7 +76,7 @@ public class SpecialMethodTests {
     @DisplayName("Test Rest Response")
     void testCountriesNoHeadOfState() throws Exception {
         CountryDTO mockCountry = new CountryDTO();
-        Mockito.when(worldController.g).thenReturn(new ArrayList<>(List.of(mockCountry)));
+        Mockito.when(worldController.getCountryById(null)).thenReturn(new ArrayList<>(List.of(mockCountry)));
         mockMvc
                 .perform(MockMvcRequestBuilders.get("https://localhost:8080/country"))
                 .andExpect(status().is(200))

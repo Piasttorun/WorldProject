@@ -1,5 +1,7 @@
 package com.sparta.jarjarbinks.worldproject.controller;
 
+import com.sparta.jarjarbinks.worldproject.exceptions.AlreadyExistsException;
+import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
@@ -27,7 +29,8 @@ public class WorldController {
     }
 
     @PostMapping("/city")
-    public void createCity(@RequestBody CityDTO newCity) {
+    public void createCity(@RequestBody CityDTO newCity) throws AlreadyExistsException {
+        createCity(newCity);
     }
 
     @GetMapping("/city")
@@ -47,6 +50,7 @@ public class WorldController {
 
     @PostMapping("/country")
     public void createCountry(@RequestBody CountryDTO newCity) {
+        createCountry(newCity);
     }
 
     @GetMapping("/country")
@@ -65,7 +69,8 @@ public class WorldController {
     }
 
     @PostMapping("/country_language")
-    public void createCountryLanguage(@RequestBody CountrylanguageDTO newCity) {
+    public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) {
+        createCountryLanguage(newCountrylanguage);
     }
 
     @GetMapping("/country_language")
@@ -105,8 +110,8 @@ public class WorldController {
     }
 
     // affiq
-    @GetMapping("/citiesSmallestPopulation/{id}")
-    public Integer SpeakMostPopularLanguage(@PathVariable Integer id) {
-        return null;
+    @GetMapping("/popular-language/{countrycode}")
+    public Integer SpeakMostPopularLanguage(@PathVariable String countrycode) throws NotFoundException {
+        return worldService.getNumberOfPopularLanguageSpeakers(countrycode);
     }
 }

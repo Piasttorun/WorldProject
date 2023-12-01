@@ -166,7 +166,7 @@ public class WorldService {
         List<CountryDTO> countriesList = countryRepository.findAll();
 
         for (CountryDTO country : countriesList) {
-            if (country.getHeadOfState().isEmpty()) {
+            if (country.getHeadOfState() == null || country.getHeadOfState().equals("")) {
                 countriesWithNoHeadOfState.add(country);
             }
         }

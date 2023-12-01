@@ -6,6 +6,7 @@ import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
@@ -79,14 +80,13 @@ public class WorldController {
     }
 
     @DeleteMapping("/country_language/{id}")
-    public void deleteCountryLanguage(@PathVariable String id) throws NotFoundException, InvalidArgumentFormatException {
-        worldService.deleteCountryLanguage(id);
+    public void deleteCountryLanguage(@RequestBody CountrylanguageIdDTO newCountryId) throws NotFoundException, InvalidArgumentFormatException {
+        worldService.deleteCountryLanguage(newCountryId);
     }
 
     @PostMapping("/country_language")
     public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) throws AlreadyExistsException {
         worldService.createCountryLanguage(newCountrylanguage);
-
     }
 
     @GetMapping("/country_language")
@@ -95,8 +95,8 @@ public class WorldController {
     }
 
     @PatchMapping("/country_language/{id}")
-    public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
-        return worldService.putCountryLanguage(newCity, id);
+    public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newLanguage, @RequestBody CountrylanguageDTO oldLanguage) throws NotFoundException, InvalidArgumentFormatException {
+        return worldService.putCountryLanguage(newLanguage, oldLanguage);
     }
 
     // Special case methods

@@ -6,6 +6,7 @@ import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
@@ -130,16 +131,16 @@ public class WorldService {
         }
     }
 
-    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, Integer id) throws InvalidArgumentFormatException, NotFoundException {
+    public Optional<CountrylanguageDTO> putCountryLanguage(CountrylanguageDTO newCountryLanguage, CountrylanguageDTO oldCountryLanguage) throws InvalidArgumentFormatException, NotFoundException {
 
-        if (id == null) {
+        if (oldCountryLanguage == null) {
             throw new InvalidArgumentFormatException("Invalid input format: id cannot be null and must be 3 characters long");
         }
 
-        Optional<CountrylanguageDTO> existingCountryLanguage = countrylanguageRepository.findById(id);
+        CountrylanguageDTO existingCountryLanguage = countrylanguageRepository.findCountrylanguageDTOById(oldCountryLanguage.getId());
 
-        if (existingCountryLanguage.isPresent()) {
-            CountrylanguageDTO countryLanguageToPut = existingCountryLanguage.get();
+        if (existingCountryLanguage.equals(newCountryLanguage)) {
+            CountrylanguageDTO countryLanguageToPut = newCountryLanguage;
             countryLanguageToPut.setId(newCountryLanguage.getId());
             countrylanguageRepository.save(countryLanguageToPut);
             return Optional.of(countryLanguageToPut);
@@ -272,21 +273,21 @@ public class WorldService {
         }
     }
 
-    public void deleteCountryLanguage(String language) throws InvalidArgumentFormatException, NotFoundException {
-        if(language == null){
+    public void deleteCountryLanguage(CountrylanguageIdDTO languageID) throws InvalidArgumentFormatException, NotFoundException {
+        if(languageID == null){
             throw new InvalidArgumentFormatException("Invalid language was entered make sure the language is Capitalized");
         }
         int count = 0;
 
         List<CountrylanguageDTO> languages = countrylanguageRepository.findAll();
         for(CountrylanguageDTO country: languages){
-            if(country.getId().getLanguage().equals(language)){
+            if(country.getId().equals(languageID)){
                 countrylanguageRepository.delete(country);
                 count++;
             }
         }
         if (count == 0){
-            throw new NotFoundException("The Language " + language + " could not be found.");
+            throw new NotFoundException("The Language " + languageID + " could not be found.");
         }
     }
 

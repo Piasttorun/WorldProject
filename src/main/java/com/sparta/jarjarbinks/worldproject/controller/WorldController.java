@@ -38,7 +38,7 @@ public class WorldController {
         createCity(newCity);
     }
 
-    @GetMapping("/city")
+    @GetMapping("/city/{id}")
     public List<CityDTO> getCityById(@PathVariable Integer id) {
         if (id == null) {
             return worldService.getCity();
@@ -65,7 +65,7 @@ public class WorldController {
 
     @GetMapping("/country/{code}")
     public List<CountryDTO> getCountryById(@PathVariable String code) {
-        if (code == null) {
+        if (code.isEmpty()) {
             return worldService.getCountry();
         }else {
             List<CountryDTO> countries = new ArrayList<>((Collection) worldService.getCountryById(code).get());
@@ -91,7 +91,7 @@ public class WorldController {
 
     @GetMapping("/country_language")
     public List<CountrylanguageDTO> getCountryLanguage(@RequestBody String name) {
-        if (name == null) {
+        if (name.isEmpty()) {
             return worldService.getCountrylanguage();
         }else {
             List<CountrylanguageDTO> languages = new ArrayList<>((Collection) worldService.getCountrylanguageByName(name).get());

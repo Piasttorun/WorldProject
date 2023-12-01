@@ -265,7 +265,7 @@ public class WorldService {
         } else {
             Optional<CountryDTO> thisCountry = countryRepository.findById(countryId.toString());
             List<CityDTO> thisCity = cityRepository.findAllByCountryCode(thisCountry);
-            countryRepository.delete(thisCountry);
+            countryRepository.deleteCountryDTOByCode(thisCountry.get().getCode());
             cityRepository.deleteAllByCountryCode(thisCountry);
         }
 

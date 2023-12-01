@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class CityDTO {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CountryCode", nullable = false)
+    @JsonBackReference
     private CountryDTO countryCode;
 
     @Size(max = 20)

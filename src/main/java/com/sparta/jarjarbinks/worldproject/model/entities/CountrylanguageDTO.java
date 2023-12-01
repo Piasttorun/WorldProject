@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,6 +15,7 @@ public class CountrylanguageDTO {
     @MapsId("countryCode")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "CountryCode", nullable = false)
+    @JsonBackReference
     private CountryDTO countryCode;
 
     @NotNull

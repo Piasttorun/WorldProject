@@ -16,8 +16,8 @@ public class WorldProjectApplication {
 		SpringApplication.run(WorldProjectApplication.class, args);
 	}
 
-	@Bean
-	public CommandLineRunner runner(CityRepository cityRepository, CountrylanguageRepository countrylanguageRepository, CountryRepository countryRepository) {
-		return args -> System.out.println();
-	}
+//	@Bean
+//	public CommandLineRunner runner(CityRepository cityRepository, CountrylanguageRepository countrylanguageRepository, CountryRepository countryRepository) {
+//		return args -> System.out.println();
+//	}
 }

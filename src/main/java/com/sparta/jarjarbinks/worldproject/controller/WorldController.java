@@ -1,6 +1,7 @@
 package com.sparta.jarjarbinks.worldproject.controller;
 
 import com.sparta.jarjarbinks.worldproject.exceptions.AlreadyExistsException;
+import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
 import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
@@ -9,7 +10,6 @@ import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,13 +29,13 @@ public class WorldController {
     }
 
     @DeleteMapping("/city/{id}")
-    public void deleteCity(@PathVariable Integer id) {
-        deleteCity(id);
+    public void deleteCity(@PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        worldService.deleteCity(id);
     }
 
     @PostMapping("/city")
     public void createCity(@RequestBody CityDTO newCity) throws AlreadyExistsException {
-        createCity(newCity);
+        worldService.createCity(newCity);
     }
 
     @GetMapping("/city/{id}")
@@ -49,13 +49,13 @@ public class WorldController {
     }
 
     @PatchMapping("/city/{id}")
-    public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) {
-        return patchCity(newCity, id);
+    public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        return worldService.putCity(newCity, id);
     }
 
     @DeleteMapping("/country/{id}")
-    public void deleteCountry(@PathVariable Integer id) {
-        deleteCountry(id);
+    public void deleteCountry(@PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        worldService.deleteCountry(id);
     }
 
     @PostMapping("/country")
@@ -74,37 +74,37 @@ public class WorldController {
     }
 
     @PatchMapping("/country/{id}")
-    public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) {
-        return patchCountry(newCity, id);
+    public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        return worldService.putCountry(newCity, String.valueOf(id));
     }
 
     @DeleteMapping("/country_language/{id}")
-    public void deleteCountryLanguage(@PathVariable String id) {
-        deleteCountryLanguage(id);
+    public void deleteCountryLanguage(@PathVariable String id) throws NotFoundException, InvalidArgumentFormatException {
+        worldService.deleteCountryLanguage(id);
     }
 
     @PostMapping("/country_language")
-    public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) {
-        createCountryLanguage(newCountrylanguage);
+    public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) throws AlreadyExistsException {
+        worldService.createCountryLanguage(newCountrylanguage);
 
     }
 
     @GetMapping("/country_language")
     public List<CountrylanguageDTO> getCountryLanguage() {
-        return getCountryLanguage();
+        return worldService.getCountrylanguage();
     }
 
     @PatchMapping("/country_language/{id}")
-    public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newCity, @PathVariable Integer id) {
-        return patchCountryLanguage(newCity, id);
+    public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+        return worldService.putCountryLanguage(newCity, id);
     }
 
     // Special case methods
 
     // fergus
     @GetMapping("/countriesNoHeadOfState")
-    public Optional<CountryDTO> countriesNoHeadOfState() {
-        return countriesNoHeadOfState();
+    public List<CountryDTO> countriesNoHeadOfState() {
+        return worldService.getCountriesNoHeadOfState();
     }
 
     // uyi

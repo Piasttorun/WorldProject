@@ -113,8 +113,8 @@ public class WorldService {
         Optional<CityDTO> existingCity = cityRepository.findById(id);
 
         if (existingCity.isPresent()) {
-            CityDTO cityToPut = existingCity.get();
-            cityToPut.setId(newCity.getId());
+            CityDTO cityToPut = newCity;
+            cityToPut.setId(existingCity.get().getId());
             cityRepository.save(cityToPut);
             return Optional.of(cityToPut);
         } else {
@@ -132,8 +132,8 @@ public class WorldService {
         Optional<CountryDTO> existingCountry = countryRepository.findById(code);
 
         if (existingCountry.isPresent()) {
-            CountryDTO countryToPut = existingCountry.get();
-            countryToPut.setCode(newCountry.getCode());
+            CountryDTO countryToPut = newCountry;
+            countryToPut.setCode(existingCountry.get().getCode());
             countryRepository.save(countryToPut);
             return Optional.of(countryToPut);
         } else {

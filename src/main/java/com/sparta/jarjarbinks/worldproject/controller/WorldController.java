@@ -90,13 +90,8 @@ public class WorldController {
     }
 
     @GetMapping("/country_language")
-    public List<CountrylanguageDTO> getCountryLanguage(@RequestBody String name) {
-        if (name.isEmpty()) {
-            return worldService.getCountrylanguage();
-        }else {
-            List<CountrylanguageDTO> languages = new ArrayList<>((Collection) worldService.getCountrylanguageByName(name).get());
-            return languages;
-        }
+    public List<CountrylanguageDTO> getCountryLanguage() {
+        return getCountryLanguage();
     }
 
     @PatchMapping("/country_language/{id}")
@@ -113,7 +108,7 @@ public class WorldController {
     }
 
     // uyi
-    @PostMapping("/percentagePopulationLargestCity}")
+    @PostMapping("/percentagePopulationLargestCity")
     public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
         return worldService.getPercentagePopulationLargestCity(newCountry);
     }

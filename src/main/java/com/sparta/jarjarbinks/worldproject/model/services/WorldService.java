@@ -183,8 +183,29 @@ public class WorldService {
                 largestCity = city;
             }
         }
-        return (largestCity.getPopulation() / country.getPopulation()) * 100;
+        return ((double) largestCity.getPopulation() / country.getPopulation()) * 100;
     }
+
+    public double getPercentagePopulationLargestCity(String countryCode) throws NotFoundException {
+        Optional<CountryDTO> countryList;
+
+        if(countryRepository.findByCode(countryCode).isEmpty()){
+            throw new NotFoundException("Country code does not exist");
+        }else {
+            countryList = countryRepository.findByCode(countryCode);
+        }
+        List<CityDTO> cities = cityRepository.findAllByCountryCode(countryList.get());
+
+        CityDTO largestCity = cities.get(0);
+
+        for(CityDTO city: cities){
+            if(city.getPopulation() > largestCity.getPopulation()){
+                largestCity = city;
+            }
+        }
+        return ((double) largestCity.getPopulation() / countryList.get().getPopulation()) * 100;
+    }
+
 
     //Which country has the most cities? How many cites does it have? Mateusz
     public CountryDTO getCountryMostCities() {

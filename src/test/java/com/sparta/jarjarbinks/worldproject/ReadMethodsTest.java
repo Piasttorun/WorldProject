@@ -34,7 +34,7 @@ public class ReadMethodsTest {
         CityDTO testCity = new CityDTO();
         testCity.setId(1);
         testCity.setName("Test City");
-        testCity.setCountryCode("TST");
+//        testCity.setCountryCode("TST");
         testCity.setDistrict("Test District");
         testCity.setPopulation(100000);
         cityRepository.save(testCity);
@@ -50,7 +50,7 @@ public class ReadMethodsTest {
         testCountry.setName("Test Country");
         testCountry.setContinent("Test Continent");
         testCountry.setRegion("Test Region");
-        testCountry.setSurfaceArea(100000.0);
+//        testCountry.setSurfaceArea(100000.0);
         testCountry.setPopulation(1000000);
         countryRepository.save(testCountry);
 

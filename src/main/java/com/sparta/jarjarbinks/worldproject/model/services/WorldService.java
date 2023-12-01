@@ -73,6 +73,18 @@ public class WorldService {
         }
     }
 
+    public List<CityDTO> getCity() {
+        return cityRepository.findAll();
+    }
+
+    public List<CountryDTO> getCountry() {
+        return countryRepository.findAll();
+    }
+
+    public List<CountrylanguageDTO> getCountrylanguage() {
+        return countrylanguageRepository.findAll();
+    }
+
     public Optional<CountryDTO> getCountryById(String code) {
         try {
             return countryRepository.findById(code);
@@ -82,18 +94,9 @@ public class WorldService {
         }
     }
 
-    public List<CountryDTO> getCountry() {
+    public Optional<CountrylanguageDTO> getCountrylanguageByName(String name) {
         try {
-            return countryRepository.findAll();
-        } catch (Exception e) {
-            System.err.println("Failed to get all countries: " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    public Optional<CountrylanguageDTO> getCountrylanguageById(CountrylanguageIdDTO id) {
-        try {
-            return countrylanguageRepository.findById(id);
+            return countrylanguageRepository.findByLanguage(name);
         } catch (Exception e) {
             System.err.println("Failed to get country language by ID: " + e.getMessage());
             return Optional.empty();

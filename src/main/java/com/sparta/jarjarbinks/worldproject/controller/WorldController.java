@@ -5,11 +5,14 @@ import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
+import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
+import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +22,9 @@ public class WorldController {
     private final WorldService worldService;
 
     @Autowired
-    public WorldController(WorldService worldService) {
+    public WorldController(WorldService worldService,
+                           CountryRepository countryRepository,
+                           CountrylanguageRepository countrylanguageRepository) {
         this.worldService = worldService;
     }
 
@@ -34,8 +39,13 @@ public class WorldController {
     }
 
     @GetMapping("/city")
-    public Optional<CityDTO> getCityById(@PathVariable Integer id) {
-        return worldService.getCityById(id);
+    public List<CityDTO> getCityById(@PathVariable Integer id) {
+        if (id == null) {
+            return worldService.getCity();
+        }else {
+            List<CityDTO> cities = new ArrayList<>((Collection) worldService.getCityById(id).get());
+            return cities;
+        }
     }
 
     @PatchMapping("/city/{id}")
@@ -54,8 +64,13 @@ public class WorldController {
     }
 
     @GetMapping("/country/{code}")
-    public Optional<CountryDTO> getCountryById(@PathVariable String code) {
-        return worldService.getCountryById(code);
+    public List<CountryDTO> getCountryById(@PathVariable String code) {
+        if (code == null) {
+            return worldService.getCountry();
+        }else {
+            List<CountryDTO> countries = new ArrayList<>((Collection) worldService.getCountryById(code).get());
+            return countries;
+        }
     }
 
     @PatchMapping("/country/{id}")
@@ -71,11 +86,17 @@ public class WorldController {
     @PostMapping("/country_language")
     public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) {
         createCountryLanguage(newCountrylanguage);
+
     }
 
     @GetMapping("/country_language")
-    public List<CountrylanguageDTO> getCountryLanguage() {
-        return worldService.getAllCountryLanguages();
+    public List<CountrylanguageDTO> getCountryLanguage(@RequestBody String name) {
+        if (name == null) {
+            return worldService.getCountrylanguage();
+        }else {
+            List<CountrylanguageDTO> languages = new ArrayList<>((Collection) worldService.getCountrylanguageByName(name).get());
+            return languages;
+        }
     }
 
     @PatchMapping("/country_language/{id}")

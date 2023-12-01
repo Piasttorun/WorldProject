@@ -12,8 +12,7 @@ import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRep
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +39,14 @@ public class WorldController {
     }
 
     @GetMapping("/city/{id}")
-    public List<CityDTO> getCityById(@PathVariable Integer id) {
-        if (id == null) {
-            return worldService.getCity();
-        }else {
-            List<CityDTO> cities = new ArrayList<>((Collection) worldService.getCityById(id).get());
-            return cities;
-        }
+    public Optional<CityDTO> getCityById(@PathVariable Integer id) {
+        CityDTO cities = worldService.getCityById(id).get();
+        return Optional.of(cities);
+    }
+
+    @GetMapping("/city")
+    public List<CityDTO> getCityById() {
+        return worldService.getCity();
     }
 
     @PatchMapping("/city/{id}")
@@ -65,13 +65,14 @@ public class WorldController {
     }
 
     @GetMapping("/country/{code}")
-    public List<CountryDTO> getCountryById(@PathVariable String code) {
-        if (code.isEmpty()) {
-            return worldService.getCountry();
-        }else {
-            List<CountryDTO> countries = new ArrayList<>((Collection) worldService.getCountryById(code).get());
-            return countries;
-        }
+    public Optional<CountryDTO> getCountryById(@PathVariable String code) {
+        Optional<CountryDTO> countries = worldService.getCountryById(code);
+        return countries;
+    }
+
+    @GetMapping("/country")
+    public List<CountryDTO> getCountry() {
+        return worldService.getCountry();
     }
 
     @PatchMapping("/country/{id}")
@@ -79,7 +80,7 @@ public class WorldController {
         return worldService.putCountry(newCity, String.valueOf(id));
     }
 
-    @DeleteMapping("/country_language/{id}")
+    @DeleteMapping("/country_language")
     public void deleteCountryLanguage(@RequestBody CountrylanguageIdDTO newCountryId) throws NotFoundException, InvalidArgumentFormatException {
         worldService.deleteCountryLanguage(newCountryId);
     }
@@ -93,6 +94,7 @@ public class WorldController {
     public List<CountrylanguageDTO> getCountryLanguage() {
         return worldService.getCountrylanguage();
     }
+
 
     @PatchMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newLanguage, @RequestBody CountrylanguageDTO oldLanguage) throws NotFoundException, InvalidArgumentFormatException {

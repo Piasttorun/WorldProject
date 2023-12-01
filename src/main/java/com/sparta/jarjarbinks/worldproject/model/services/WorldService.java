@@ -94,6 +94,16 @@ public class WorldService {
         }
     }
 
+    public CountrylanguageDTO getCountryLanguageById(CountrylanguageIdDTO language) {
+        try {
+            return countrylanguageRepository.findCountrylanguageDTOById(language);
+        } catch (Exception e) {
+            System.err.println("Failed to get language by ID: " + e.getMessage());
+            // null different return type
+            return null;
+        }
+    }
+
     public Optional<CityDTO> putCity(CityDTO newCity, Integer id) throws InvalidArgumentFormatException, NotFoundException {
 
         if (id == null || id < 1 || id > 500) {

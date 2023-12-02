@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import org.hibernate.Hibernate;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Schema(description = "DTO used to represent composite key for CountryLanguageDTO." +
+        " Must specify country code and language, and can then be linked to CountryLanguageDTO object.")
 @Embeddable
 public class CountrylanguageIdDTO implements Serializable {
     private static final long serialVersionUID = -3399698344831111007L;

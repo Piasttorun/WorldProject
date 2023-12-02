@@ -1,11 +1,14 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
+@Schema(description = "DTO used to represent Country Language." +
+        " NotNullable values include IsOfficial (T/F) and percentage.")
 @Entity
 @Table(name = "countrylanguage", schema = "world")
 public class CountrylanguageDTO {

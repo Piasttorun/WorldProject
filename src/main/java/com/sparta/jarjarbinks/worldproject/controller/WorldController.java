@@ -11,6 +11,9 @@ import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -53,46 +56,62 @@ public class WorldController {
 
     }
 
+    @Operation(summary = "Delete a city specified by integer ID.")
+    @Tag(name = "City API")
     @DeleteMapping("/city/{id}")
     public void deleteCity(@PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
         worldService.deleteCity(id);
     }
 
+    @Operation(summary = "Create a new city using a supplied JSON body.")
+    @Tag(name = "City API")
     @PostMapping("/city")
     public void createCity(@RequestBody CityDTO newCity) throws AlreadyExistsException {
         worldService.createCity(newCity);
     }
 
+    @Operation(summary = "Get a city by its specified integer ID.")
+    @Tag(name = "City API")
     @GetMapping("/city/{id}")
     public Optional<CityDTO> getCityById(@PathVariable Integer id) {
         CityDTO cities = worldService.getCityById(id).get();
         return Optional.of(cities);
     }
 
+    @Operation(summary = "Get all cities.")
+    @Tag(name = "City API")
     @GetMapping("/city")
     public List<CityDTO> getCityById() {
         logger.log(Level.INFO, request.getRemoteAddr());
         return worldService.getCity();
     }
 
+    @Operation(summary = "Update a city record using a supplied JSON body and specified integer ID")
+    @Tag(name = "City API")
     @PutMapping("/city/{id}")
     public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
         return worldService.putCity(newCity, id);
     }
 
-    @DeleteMapping("/country/{id}")
-    public void deleteCountry(@PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
+    @Operation(summary = "Delete a country by its specified country code.")
+    @Tag(name = "Country API")
+    @DeleteMapping("/country/{code}")
+    public void deleteCountry(@PathVariable String code) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.deleteCountry(id);
+        worldService.deleteCountry(code);
     }
 
+    @Operation(summary = "Create a new country using a supplied JSON body.")
+    @Tag(name = "Country API")
     @PostMapping("/country")
     public void createCountry(@RequestBody CountryDTO newCity) {
         logger.log(Level.INFO, request.getRemoteAddr());
         createCountry(newCity);
     }
 
+    @Operation(summary = "Get a country by its specified country code.")
+    @Tag(name = "Country API")
     @GetMapping("/country/{code}")
     public Optional<CountryDTO> getCountryById(@PathVariable String code) {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -100,30 +119,40 @@ public class WorldController {
         return countries;
     }
 
+    @Operation(summary = "Get all countries.")
+    @Tag(name = "Country API")
     @GetMapping("/country")
     public List<CountryDTO> getCountry() {
        logger.log(Level.INFO, request.getRemoteAddr());
        return worldService.getCountry();
     }
 
+    @Operation(summary = "Update a country by a supplied JSON body and its country code.")
+    @Tag(name = "Country API")
     @PutMapping("/country/{id}")
     public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
         return worldService.putCountry(newCity, String.valueOf(id));
     }
 
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Country Language API")
     @DeleteMapping("/country_language")
     public void deleteCountryLanguage(@RequestBody CountrylanguageIdDTO newCountryId) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
         worldService.deleteCountryLanguage(newCountryId);
     }
 
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Country Language API")
     @PostMapping("/country_language")
     public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) throws AlreadyExistsException {
         logger.log(Level.INFO, request.getRemoteAddr());
         worldService.createCountryLanguage(newCountrylanguage);
     }
 
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Country Language API")
     @GetMapping("/country_language")
     public List<CountrylanguageDTO> getCountryLanguage() {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -131,6 +160,8 @@ public class WorldController {
     }
 
 
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Country Language API")
     @PutMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newLanguage, @RequestBody CountrylanguageDTO oldLanguage) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -140,13 +171,16 @@ public class WorldController {
     // Special case methods
 
     // fergus
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Special API")
     @GetMapping("/countriesNoHeadOfState")
     public List<CountryDTO> countriesNoHeadOfState() {
         logger.log(Level.INFO, request.getRemoteAddr());
         return worldService.getCountriesNoHeadOfState();
     }
 
-    // uyi
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Special API")
     @GetMapping("/percentagePopulationLargestCity")
     public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -154,6 +188,8 @@ public class WorldController {
     }
 
     // mati
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Special API")
     @GetMapping("/countryMostCities")
     public String countryMostCities() {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -162,6 +198,8 @@ public class WorldController {
     }
 
     // bianca
+    @Operation(summary = "CHANGE ME")
+    @Tag(name = "Special API")
     @GetMapping("/citiesSmallestPopulation")
     public List<String> districtSmallestPopulation() {
         logger.log(Level.INFO, request.getRemoteAddr());
@@ -169,10 +207,12 @@ public class WorldController {
     }
 
     // affiq
-    @GetMapping("/popular-language/{countrycode}")
-    public Integer SpeakMostPopularLanguage(@PathVariable String countrycode) throws NotFoundException {
+    @Operation(summary = "Get the population of people who speak the country's most popular language by country code")
+    @Tag(name = "Special API")
+    @GetMapping("/popular-language/{code}")
+    public Integer SpeakMostPopularLanguage(@PathVariable String code) throws NotFoundException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        return worldService.getNumberOfPopularLanguageSpeakers(countrycode);
+        return worldService.getNumberOfPopularLanguageSpeakers(code);
     }
 
 }

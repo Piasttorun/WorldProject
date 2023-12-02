@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,6 +8,9 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Schema(description = "DTO used to represent CountryDTO." +
+        "Not nullable values include name, continent, region," +
+        " surface area, population, local name, government form and code2.")
 @Entity
 @Table(name = "country", schema = "world")
 public class CountryDTO {

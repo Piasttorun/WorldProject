@@ -35,7 +35,7 @@ public class MockDeleteTests {
         mockCity.setName("Heaven");
         mockCity.setId(1);
 
-        Mockito.when(worldController.getCityById(null)).thenReturn(new ArrayList<>(List.of(mockCity)));
+        Mockito.when(worldController.getCityById()).thenReturn(new ArrayList<>(List.of(mockCity)));
         mockMvc
                 .perform(MockMvcRequestBuilders.delete("https://localhost:8080/city/1"))
                 .andExpect(status().is(200));
@@ -49,7 +49,7 @@ public class MockDeleteTests {
         mockCountry.setCode("1");
 
 
-        Mockito.when(worldController.getCountryById("")).thenReturn(new ArrayList<>(List.of(mockCountry)));
+        Mockito.when(worldController.getCountry()).thenReturn(new ArrayList<>(List.of(mockCountry)));
         mockMvc
                 .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/1"))
                 .andExpect(status().is(200));

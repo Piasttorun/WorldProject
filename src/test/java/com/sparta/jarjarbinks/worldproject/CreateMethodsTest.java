@@ -7,6 +7,7 @@ import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
+import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class CreateMethodsTest {
 
     @Autowired
     private WorldService worldService;
+
+    @Autowired
+    private CountryRepository countryRepository;
 
     static CountryDTO testCountry;
     static CityDTO testCity;
@@ -70,11 +74,14 @@ public class CreateMethodsTest {
     }
 
     @AfterAll
-    public static void tearDown(@Autowired WorldService worldService) throws NotFoundException, InvalidArgumentFormatException {
+    public static void tearDown(
+            @Autowired WorldService worldService,
+            @Autowired CountryRepository countryRepository)
+            throws NotFoundException, InvalidArgumentFormatException {
+
         worldService.deleteCountryLanguage(testCountryLangId);
         worldService.deleteCity(testCity.getId());
-        System.out.println(testCountry.getCode());
-        worldService.deleteCountry(testCountry.getCode());
+        countryRepository.deleteById("XXX");
     }
 
 
@@ -96,5 +103,12 @@ public class CreateMethodsTest {
         Assertions.assertEquals(testCity.getId(), fetchedCity.get().getId());
     }
 
+    @Test
+    @DisplayName("Testing if Country Language is created properly")
+    public void testCountryLanguage() {
+        CountrylanguageDTO fetchedLanguage = worldService.getCountryLanguageById(testCountryLangId);
+        Assertions.assertEquals("XXX", fetchedLanguage.getCountryCode().getCode ());
+        Assertions.assertEquals("English", fetchedLanguage.getId().getLanguage());
+    }
 
 }

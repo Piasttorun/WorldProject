@@ -49,7 +49,7 @@ public class WorldController {
         return worldService.getCity();
     }
 
-    @PatchMapping("/city/{id}")
+    @PutMapping("/city/{id}")
     public Optional<CityDTO> patchCity(@RequestBody CityDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
         return worldService.putCity(newCity, id);
     }
@@ -75,7 +75,7 @@ public class WorldController {
         return worldService.getCountry();
     }
 
-    @PatchMapping("/country/{id}")
+    @PutMapping("/country/{id}")
     public Optional<CountryDTO> patchCountry(@RequestBody CountryDTO newCity, @PathVariable Integer id) throws NotFoundException, InvalidArgumentFormatException {
         return worldService.putCountry(newCity, String.valueOf(id));
     }
@@ -96,7 +96,7 @@ public class WorldController {
     }
 
 
-    @PatchMapping("/country_language/{id}")
+    @PutMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newLanguage, @RequestBody CountrylanguageDTO oldLanguage) throws NotFoundException, InvalidArgumentFormatException {
         return worldService.putCountryLanguage(newLanguage, oldLanguage);
     }
@@ -110,15 +110,16 @@ public class WorldController {
     }
 
     // uyi
-    @PostMapping("/percentagePopulationLargestCity")
+    @GetMapping("/percentagePopulationLargestCity")
     public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
         return worldService.getPercentagePopulationLargestCity(newCountry);
     }
 
     // mati
     @GetMapping("/countryMostCities")
-    public CountryDTO countryMostCities() {
-        return worldService.getCountryMostCities();
+    public String countryMostCities() {
+        CountryDTO city = worldService.getCountryMostCities();
+        return "City name: " + city.getName() + " and amount: " + city.getCities().size() + ".";
     }
 
     // bianca

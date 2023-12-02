@@ -53,7 +53,6 @@ public class MockDeleteTests {
         mockMvc
                 .perform(MockMvcRequestBuilders.delete("https://localhost:8080/country/1"))
                 .andExpect(status().is(200));
-
     }
 
     @Test
@@ -62,6 +61,7 @@ public class MockDeleteTests {
         CountrylanguageDTO mockLanguage =  new CountrylanguageDTO();
         CountrylanguageIdDTO Help = new CountrylanguageIdDTO();
         mockLanguage.setId(Help);
+        String jsonPayload = "{\"newCountryId\": \"Help\"}";
 
         Mockito.when(worldController.getCountryLanguage()).thenReturn(new ArrayList<>(List.of(mockLanguage)));
         mockMvc

@@ -113,8 +113,8 @@ public class WorldService {
         Optional<CityDTO> existingCity = cityRepository.findById(id);
 
         if (existingCity.isPresent()) {
-            CityDTO cityToPut = existingCity.get();
-            cityToPut.setId(newCity.getId());
+            CityDTO cityToPut = newCity;
+            cityToPut.setId(existingCity.get().getId());
             cityRepository.save(cityToPut);
             return Optional.of(cityToPut);
         } else {
@@ -132,8 +132,8 @@ public class WorldService {
         Optional<CountryDTO> existingCountry = countryRepository.findById(code);
 
         if (existingCountry.isPresent()) {
-            CountryDTO countryToPut = existingCountry.get();
-            countryToPut.setCode(newCountry.getCode());
+            CountryDTO countryToPut = newCountry;
+            countryToPut.setCode(existingCountry.get().getCode());
             countryRepository.save(countryToPut);
             return Optional.of(countryToPut);
         } else {
@@ -166,7 +166,7 @@ public class WorldService {
         List<CountryDTO> countriesList = countryRepository.findAll();
 
         for (CountryDTO country : countriesList) {
-            if (country.getHeadOfState().isEmpty()) {
+            if (country.getHeadOfState() == null || country.getHeadOfState().equals("")) {
                 countriesWithNoHeadOfState.add(country);
             }
         }
@@ -183,34 +183,42 @@ public class WorldService {
                 largestCity = city;
             }
         }
-        return (largestCity.getPopulation() / country.getPopulation()) * 100;
+        return ((double) largestCity.getPopulation() / country.getPopulation()) * 100;
     }
+
+    public double getPercentagePopulationLargestCity(String countryCode) throws NotFoundException {
+        Optional<CountryDTO> countryList;
+
+        if(countryRepository.findByCode(countryCode).isEmpty()){
+            throw new NotFoundException("Country code does not exist");
+        }else {
+            countryList = countryRepository.findByCode(countryCode);
+        }
+        List<CityDTO> cities = cityRepository.findAllByCountryCode(countryList.get());
+
+        CityDTO largestCity = cities.get(0);
+
+        for(CityDTO city: cities){
+            if(city.getPopulation() > largestCity.getPopulation()){
+                largestCity = city;
+            }
+        }
+        return ((double) largestCity.getPopulation() / countryList.get().getPopulation()) * 100;
+    }
+
 
     //Which country has the most cities? How many cites does it have? Mateusz
     public CountryDTO getCountryMostCities() {
 
-        int freq = 0;
-        String res = "";
-
-        ArrayList<String> temp = new ArrayList<>();
-        for (CityDTO city : cityRepository.findAll()) {
-            temp.add(String.valueOf(city.getCountryCode()));
-        }
-        for (int i = 0; i < temp.size(); i++) {
-            int count = 0;
-            for (int j = i + 1; j < temp.size(); j++) {
-                if (temp.get(j) == temp.get(i)) {
-                    count++;
-                }
-            }
-            // updating our max freq of occurred string in the
-            // array of strings
-            if (count >= freq) {
-                res = temp.get(i);
-                freq = count;
+        int currentLargestAmount = 0;
+        CountryDTO currentLargestCountry = null;
+        for (CountryDTO country : countryRepository.findAll()) {
+            if (country.getCities().size() > currentLargestAmount) {
+                currentLargestAmount = country.getCities().size();
+                currentLargestCountry = country;
             }
         }
-        return countryRepository.findByCode(res).get();
+        return currentLargestCountry;
     }
 
 

@@ -40,11 +40,11 @@ public class ReadMethodsTest {
 
         assertTrue(fetchedCity.isPresent());
         assertEquals("Amsterdam", fetchedCity.get().getName());
+
     }
 
     @Test
     public void testCountryExistsById() throws NotFoundException {
-
        Optional<CountryDTO> fetchedCountry = worldService.getCountryById("ABW");
 
        assertTrue(fetchedCountry.isPresent());
@@ -63,9 +63,6 @@ public class ReadMethodsTest {
         }
         assertTrue(flag);
     }
-
-
-
 
 
 }

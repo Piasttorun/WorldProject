@@ -16,6 +16,7 @@ public interface CountrylanguageRepository extends JpaRepository<Countrylanguage
     CountrylanguageDTO findCountrylanguageDTOById(CountrylanguageIdDTO countrylanguageIdDTO);
 
     List<CountrylanguageDTO> findCountrylanguageDTOByCountryCode(CountryDTO countryDTO);
+
 }
 
 

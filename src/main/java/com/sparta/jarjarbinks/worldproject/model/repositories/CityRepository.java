@@ -11,8 +11,6 @@ import java.util.Optional;
 @Repository
 public interface CityRepository extends JpaRepository<CityDTO, Integer> {
 
-    // List<CityDTO> findCityDTOByCountryCode(String countryCode);
-
     List<CityDTO> findAllByCountryCode(CountryDTO countryDTO);
     List<CityDTO> findAllByCountryCode(Optional<CountryDTO> countryDTO);
     void deleteAllByCountryCode(Optional<CountryDTO> countryDTO);

@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 @Table(name = "countrylanguage", schema = "world")
 public class CountrylanguageDTO {
     @EmbeddedId
+    @Schema(name = "id", defaultValue = "null",
+            description = "CountryLanguage composite key")
     private CountrylanguageIdDTO id;
 
     @MapsId("countryCode")
@@ -23,10 +25,14 @@ public class CountrylanguageDTO {
 
     @NotNull
     @Lob
+    @Schema(name = "isOfficial", defaultValue = "T",
+            description = "Is official language, determined by enum (T,F)")
     @Column(name = "IsOfficial", nullable = false)
     private String isOfficial;
 
     @NotNull
+    @Schema(name = "percentage", defaultValue = "66.9",
+            description = "Percentage of speakers who speak the language")
     @Column(name = "Percentage", nullable = false, precision = 4, scale = 1)
     private BigDecimal percentage;
 

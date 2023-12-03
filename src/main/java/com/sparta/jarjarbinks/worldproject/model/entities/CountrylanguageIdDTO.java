@@ -18,10 +18,14 @@ public class CountrylanguageIdDTO implements Serializable {
     @Size(max = 3)
     @NotNull
     @Column(name = "CountryCode", nullable = false, length = 3)
+    @Schema(name = "countryCode", defaultValue = "XYZ",
+    description = "Linked country code of CountryLanguage composite key")
     private String countryCode;
 
     @Size(max = 30)
     @NotNull
+    @Schema(name = "language", defaultValue = "English",
+            description = "Linked language of CountryLanguage composite key")
     @Column(name = "Language", nullable = false, length = 30)
     private String language;
 

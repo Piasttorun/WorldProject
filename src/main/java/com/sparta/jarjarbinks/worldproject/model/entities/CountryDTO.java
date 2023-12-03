@@ -16,67 +16,101 @@ import java.util.List;
 public class CountryDTO {
     @Id
     @Size(max = 3)
+    @Schema(name = "code", defaultValue = "XYZ",
+            description = "3 Lettered code used to identify country." +
+            " Cannot be null.")
     @Column(name = "Code", nullable = false, length = 3)
     private String code;
 
     @Size(max = 52)
     @NotNull
+    @Schema(name = "name", defaultValue = "XoYenZuan",
+            description = "Global name of the country")
     @Column(name = "Name", nullable = false, length = 52)
     private String name;
 
     @NotNull
     @Lob
+    @Schema(name = "continent", defaultValue = "Asia",
+            description = "Enum with values ('Asia','Europe'," +
+            "'North America','Africa','Oceania','Antarctica','South America')")
     @Column(name = "Continent", nullable = false)
     private String continent;
 
     @Size(max = 26)
     @NotNull
+    @Schema(name = "region", defaultValue = "Eurasia",
+            description = "Region where country is located. Cannot be null.")
     @Column(name = "Region", nullable = false, length = 26)
     private String region;
 
     @NotNull
+    @Schema(name = "surfaceArea", defaultValue = "12500",
+            description = "Surface area of country. Cannot be null.")
     @Column(name = "SurfaceArea", nullable = false, precision = 10, scale = 2)
     private BigDecimal surfaceArea;
 
-    @Column(name = "IndepYear")
+    @Column(name = "indepYear")
+    @Schema(name = "IndepYear", defaultValue = "1914",
+            description = "Independence year of country. Can be null.")
     private Short indepYear;
 
     @NotNull
+    @Schema(name = "population", defaultValue = "44500",
+            description = "Total population of country. Cannot be null.")
     @Column(name = "Population", nullable = false)
     private Integer population;
 
+    @Schema(name = "lifeExpectancy", defaultValue = "62.8",
+            description = "Average life expectancy for person in country.")
     @Column(name = "LifeExpectancy", precision = 3, scale = 1)
     private BigDecimal lifeExpectancy;
 
+    @Schema(name = "gNP", defaultValue = "400.75",
+            description = "Gross national product.")
     @Column(name = "GNP", precision = 10, scale = 2)
     private BigDecimal gnp;
 
+    @Schema(name = "gNPOld", defaultValue = "200.50",
+            description = "Old gross national product.")
     @Column(name = "GNPOld", precision = 10, scale = 2)
     private BigDecimal gNPOld;
 
+
     @Size(max = 45)
     @NotNull
+    @Schema(name = "localName", defaultValue = "XYZ Kingdom",
+            description = "Local name of country.")
     @Column(name = "LocalName", nullable = false, length = 45)
     private String localName;
 
     @Size(max = 45)
     @NotNull
+    @Schema(name = "governmentForm", defaultValue = "Monarchy",
+            description = "Government form of country.")
     @Column(name = "GovernmentForm", nullable = false, length = 45)
     private String governmentForm;
 
     @Size(max = 60)
+    @Schema(name = "headofState", defaultValue = "Affique Kabobdin III",
+            description = "Name of the head of state of the country.")
     @Column(name = "HeadOfState", length = 60)
     private String headOfState;
 
+    @Schema(name = "capital", defaultValue = "null",
+            description = "Capital city of country, given as integer IDof city.")
     @Column(name = "Capital")
     private Integer capital;
 
     @Size(max = 2)
     @NotNull
+    @Schema(name = "code2", defaultValue = "XZ",
+            description = "Two lettered code for country")
     @Column(name = "Code2", nullable = false, length = 2)
     private String code2;
 
     //@OneToMany(mappedBy = "name", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
     @OneToMany(mappedBy = "countryCode", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CityDTO> cities;
 

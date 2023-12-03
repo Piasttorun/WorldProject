@@ -1,11 +1,14 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Schema(description = "DTO used to represent a city record. Notnullable fields include " +
+        "name, countryCode (of CountryDTO type), district and population.  ")
 @Table(name = "city", schema = "world")
 public class CityDTO {
     @Id

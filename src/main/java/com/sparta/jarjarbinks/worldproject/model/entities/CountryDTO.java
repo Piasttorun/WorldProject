@@ -1,11 +1,16 @@
 package com.sparta.jarjarbinks.worldproject.model.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+@Schema(description = "DTO used to represent CountryDTO." +
+        "Not nullable values include name, continent, region," +
+        " surface area, population, local name, government form and code2.")
 @Entity
 @Table(name = "country", schema = "world")
 public class CountryDTO {
@@ -70,6 +75,18 @@ public class CountryDTO {
     @NotNull
     @Column(name = "Code2", nullable = false, length = 2)
     private String code2;
+
+    //@OneToMany(mappedBy = "name", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "countryCode", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<CityDTO> cities;
+
+    public List<CityDTO> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<CityDTO> cities) {
+        this.cities = cities;
+    }
 
     public String getCode() {
         return code;

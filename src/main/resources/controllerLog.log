@@ -9,6 +9,3 @@
 20231202 18:59:32.8533515  IP: 0:0:0:0:0:0:0:1  Action: getCountryLanguage
 20231202 20:33:34.9448804  IP: 0:0:0:0:0:0:0:1  Action: getCountry
 20231202 20:51:49.5281128  IP: 0:0:0:0:0:0:0:1  Action: getCityById
-20231203 15:13:55.2187264  IP: 0:0:0:0:0:0:0:1  Action: deleteCountry
-20231203 15:14:06.1290119  IP: 0:0:0:0:0:0:0:1  Action: deleteCountry
-20231203 15:16:08.3246345  IP: 0:0:0:0:0:0:0:1  Action: deleteCountry

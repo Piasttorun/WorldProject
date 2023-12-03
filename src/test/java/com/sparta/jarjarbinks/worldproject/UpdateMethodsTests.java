@@ -4,6 +4,7 @@ import com.sparta.jarjarbinks.worldproject.controller.WorldController;
 import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
 import com.sparta.jarjarbinks.worldproject.exceptions.NotFoundException;
 import com.sparta.jarjarbinks.worldproject.model.entities.CityDTO;
+import com.sparta.jarjarbinks.worldproject.model.entities.CountryDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CityRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
@@ -58,25 +59,21 @@ public class UpdateMethodsTests {
         existingCityDTO.setDistrict("District To Update");
         existingCityDTO.setName("City To Update");
         existingCityDTO.setPopulation(10000);
+        existingCityDTO.setCountryCode(new CountryDTO());
+
+        cityRepositoryTest.save(existingCityDTO);
 
         CityDTO newCityDTO = new CityDTO();
         newCityDTO.setId(1);
         newCityDTO.setDistrict("Updated District");
         newCityDTO.setName("Updated City");
         newCityDTO.setPopulation(20000);
+        existingCityDTO.setCountryCode(new CountryDTO());
 
         worldService.putCity(newCityDTO, 1);
-        assertEquals(worldService.getCityById(1), newCityDTO);
+        Optional<CityDTO> updatedCity = worldService.getCityById(1);
+        assertEquals(updatedCity, Optional.of(newCityDTO));
 
-//        when(cityRepositoryTest.findById(1)).thenReturn(Optional.of(existingCityDTO));
-//
-//        Optional<CityDTO> result = worldService.putCity(newCityDTO, existingCityDTO.getId());
-//
-//        verify(cityRepositoryTest).findById(existingCityDTO.getId());
-//        verify(cityRepositoryTest).save(existingCityDTO);
-//
-//        assertTrue(result.isPresent());
-//        assertEquals(newCityDTO, result.get());
     }
 
 

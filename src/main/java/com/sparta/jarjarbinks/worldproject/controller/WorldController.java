@@ -96,10 +96,10 @@ public class WorldController {
 
     @Operation(summary = "Delete a country by its specified country code.")
     @Tag(name = "Country API")
-    @DeleteMapping("/country/{code}")
-    public void deleteCountry(@PathVariable String code) throws NotFoundException, InvalidArgumentFormatException {
+    @DeleteMapping("/country/{name}")
+    public void deleteCountry(@PathVariable String name) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.deleteCountry(code);
+        worldService.deleteCountry(name);
     }
 
     @Operation(summary = "Create a new country using a supplied JSON body.")
@@ -137,10 +137,10 @@ public class WorldController {
 
     @Operation(summary = "Delete country language by supplying CountrylanguageIdDTO languageID")
     @Tag(name = "Country Language API")
-    @DeleteMapping("/country_language")
-    public void deleteCountryLanguage(@RequestBody CountrylanguageIdDTO newCountryId) throws NotFoundException, InvalidArgumentFormatException {
+    @DeleteMapping("/country_language/{language}/{countryCode}")
+    public void deleteCountryLanguage(@PathVariable String language,@PathVariable String countryCode) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.deleteCountryLanguage(newCountryId);
+        worldService.deleteCountryLanguage(language,countryCode);
     }
 
     @Operation(summary = "Create country language by supplying countrylanguageDTO")

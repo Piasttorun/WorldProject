@@ -10,6 +10,7 @@ import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageDTO;
 import com.sparta.jarjarbinks.worldproject.model.entities.CountrylanguageIdDTO;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountryRepository;
 import com.sparta.jarjarbinks.worldproject.model.repositories.CountrylanguageRepository;
+import com.sparta.jarjarbinks.worldproject.model.services.ApiKeyService;
 import com.sparta.jarjarbinks.worldproject.model.services.WorldService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +32,8 @@ public class WorldController {
     private final HttpServletRequest request;
     private final WorldService worldService;
 
+    private final ApiKeyService apiKeyService;
+
     private final Logger logger = Logger.getLogger(WorldController.class.getName());
     private FileHandler fileHandler;
 
@@ -38,8 +41,10 @@ public class WorldController {
     public WorldController(WorldService worldService,
                            CountryRepository countryRepository,
                            CountrylanguageRepository countrylanguageRepository,
+                           ApiKeyService apiKeyService,
                            HttpServletRequest request) {
         this.worldService = worldService;
+        this.apiKeyService = apiKeyService;
         this.request = request;
 
         // Log init
@@ -105,9 +110,21 @@ public class WorldController {
     @Operation(summary = "Create a new country using a supplied JSON body.")
     @Tag(name = "Country API")
     @PostMapping("/country")
-    public void createCountry(@RequestBody CountryDTO newCity) {
+    public void createCountry(@RequestBody CountryDTO newCity) throws AlreadyExistsException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        createCountry(newCity);
+        worldService.createCountry(newCity);
+    }
+
+    @Operation(summary = "Create a new country using a supplied JSON body and API key.")
+    @Tag(name = "Country API")
+    @PostMapping("/country/{apikey}")
+    public void createCountryWithApiKey(@RequestBody CountryDTO newCity,
+                                        @PathVariable String apikey) throws Exception {
+        logger.log(Level.INFO, request.getRemoteAddr());
+        if (apiKeyService.checkApiKey(apikey))
+            worldService.createCountry(newCity);
+        else
+            throw new Exception("Invalid API key");
     }
 
     @Operation(summary = "Get a country by its specified country code.")

@@ -101,10 +101,10 @@ public class WorldController {
 
     @Operation(summary = "Delete a country by its specified country code.")
     @Tag(name = "Country API")
-    @DeleteMapping("/country/{code}")
-    public void deleteCountry(@PathVariable String code) throws NotFoundException, InvalidArgumentFormatException {
+    @DeleteMapping("/country/{name}")
+    public void deleteCountry(@PathVariable String name) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.deleteCountry(code);
+        worldService.deleteCountry(name);
     }
 
     @Operation(summary = "Create a new country using a supplied JSON body.")
@@ -152,15 +152,15 @@ public class WorldController {
         return worldService.putCountry(newCity, String.valueOf(id));
     }
 
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Delete country language by supplying CountrylanguageIdDTO languageID")
     @Tag(name = "Country Language API")
-    @DeleteMapping("/country_language")
-    public void deleteCountryLanguage(@RequestBody CountrylanguageIdDTO newCountryId) throws NotFoundException, InvalidArgumentFormatException {
+    @DeleteMapping("/country_language/{language}/{countryCode}")
+    public void deleteCountryLanguage(@PathVariable String language,@PathVariable String countryCode) throws NotFoundException, InvalidArgumentFormatException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.deleteCountryLanguage(newCountryId);
+        worldService.deleteCountryLanguage(language,countryCode);
     }
 
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Create country language by supplying countrylanguageDTO")
     @Tag(name = "Country Language API")
     @PostMapping("/country_language")
     public void createCountryLanguage(@RequestBody CountrylanguageDTO newCountrylanguage) throws AlreadyExistsException {
@@ -168,7 +168,7 @@ public class WorldController {
         worldService.createCountryLanguage(newCountrylanguage);
     }
 
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Get country language")
     @Tag(name = "Country Language API")
     @GetMapping("/country_language")
     public List<CountrylanguageDTO> getCountryLanguage() {
@@ -177,7 +177,7 @@ public class WorldController {
     }
 
 
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Update country language by supplying two CountrylanguageDTOs for one to be updated and one to be updated to")
     @Tag(name = "Country Language API")
     @PutMapping("/country_language/{id}")
     public Optional<CountrylanguageDTO> patchCountryLanguage(@RequestBody CountrylanguageDTO newLanguage, @RequestBody CountrylanguageDTO oldLanguage) throws NotFoundException, InvalidArgumentFormatException {
@@ -188,7 +188,7 @@ public class WorldController {
     // Special case methods
 
     // fergus
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Get a list of all countries with no head of state")
     @Tag(name = "Special API")
     @GetMapping("/countriesNoHeadOfState")
     public List<CountryDTO> countriesNoHeadOfState() {
@@ -196,7 +196,7 @@ public class WorldController {
         return worldService.getCountriesNoHeadOfState();
     }
 
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Returns what percentage of a given countries population lives in its largest city")
     @Tag(name = "Special API")
     @GetMapping("/percentagePopulationLargestCity")
     public double percentagePopulationLargestCity(@RequestBody CountryDTO newCountry) {
@@ -205,7 +205,7 @@ public class WorldController {
     }
 
     // mati
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Returns the country that has the most cities")
     @Tag(name = "Special API")
     @GetMapping("/countryMostCities")
     public String countryMostCities() {
@@ -215,7 +215,7 @@ public class WorldController {
     }
 
     // bianca
-    @Operation(summary = "CHANGE ME")
+    @Operation(summary = "Returns a list of the five districts that have the smallest population")
     @Tag(name = "Special API")
     @GetMapping("/citiesSmallestPopulation")
     public List<String> districtSmallestPopulation() {

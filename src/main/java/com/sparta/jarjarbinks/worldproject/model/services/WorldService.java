@@ -366,6 +366,26 @@ public class WorldService {
         }
         logger.log(Level.INFO, "Country Language deleted");
     }
+    public void deleteCountryLanguage(String language,String countryCode) throws InvalidArgumentFormatException, NotFoundException {
+        if(language == null || countryCode == null){
+            logger.log(Level.INFO, "NotFoundException: Invalid language or country code entered");
+            throw new InvalidArgumentFormatException("Invalid language was entered make sure the language is Capitalized");
+        }
+        int count = 0;
+
+        List<CountrylanguageDTO> languages = countrylanguageRepository.findAll();
+        for(CountrylanguageDTO country: languages){
+            if(country.getId().getLanguage().equals(language) && country.getId().getCountryCode().equals(countryCode)){
+                countrylanguageRepository.delete(country);
+                count++;
+            }
+        }
+        if (count == 0){
+            logger.log(Level.INFO, "NotFoundException: Language ID could not be found.");
+            throw new NotFoundException("The Language " + language + " could not be found.");
+        }
+        logger.log(Level.INFO, "Country Language deleted");
+    }
 
     public List<CountrylanguageDTO> getAllCountryLanguages() {
         try {

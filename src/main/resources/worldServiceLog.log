@@ -50,3 +50,6 @@
 20231203 14:39:34.2469244  Action: createCountryLanguage  Message: New CountryLanguageDTO created successfully.
 20231203 14:39:34.8449727  Action: deleteCountryLanguage  Message: Country Language deleted
 20231203 14:39:34.8479629  Action: deleteCity  Message: Deleting city
+20231203 15:13:55.3120358  Action: deleteCountry  Message: NotFoundException: Country could not be found
+20231203 15:14:06.132007  Action: deleteCountry  Message: NotFoundException: Country could not be found
+20231203 15:16:08.3490961  Action: deleteCountry  Message: Deleting country

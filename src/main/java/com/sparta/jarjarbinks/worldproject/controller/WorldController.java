@@ -1,5 +1,5 @@
 package com.sparta.jarjarbinks.worldproject.controller;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import com.sparta.jarjarbinks.worldproject.exceptions.AlreadyExistsException;
 import com.sparta.jarjarbinks.worldproject.exceptions.ControllerLogFormatter;
 import com.sparta.jarjarbinks.worldproject.exceptions.InvalidArgumentFormatException;
@@ -110,9 +110,10 @@ public class WorldController {
     @Operation(summary = "Create a new country using a supplied JSON body.")
     @Tag(name = "Country API")
     @PostMapping("/country")
-    public void createCountry(@RequestBody CountryDTO newCity) throws AlreadyExistsException {
+    public void createCountry(@RequestBody CountryDTO newCountry) throws AlreadyExistsException {
         logger.log(Level.INFO, request.getRemoteAddr());
-        worldService.createCountry(newCity);
+        System.out.println("New country code: " + newCountry.getCode());
+        worldService.createCountry(newCountry);
     }
 
     @Operation(summary = "Create a new country using a supplied JSON body and API key.")

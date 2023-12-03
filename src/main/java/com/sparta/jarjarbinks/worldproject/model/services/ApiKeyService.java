@@ -1,5 +1,6 @@
 package com.sparta.jarjarbinks.worldproject.model.services;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ public class ApiKeyService {
         apiKeys.add(generatedString);
         return generatedString;
     }
+
     public boolean checkApiKey(String key) {
         return apiKeys.contains(key);
     }
+
     public void saveApiKey(String key) {
         // Code to save key
     }

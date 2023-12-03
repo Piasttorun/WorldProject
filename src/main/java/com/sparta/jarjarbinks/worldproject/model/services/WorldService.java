@@ -59,21 +59,32 @@ public class WorldService {
             logger.log(Level.INFO, "AlreadyExistsException: "+cityDTO.getId().toString());
             throw new AlreadyExistsException(cityDTO.getId().toString());
         } else {
-            cityRepository.save(cityDTO);
-            logger.log(Level.INFO, "New CityDTO created successfully.");
-            return cityDTO;
+            try {
+                cityRepository.save(cityDTO);
+                logger.log(Level.INFO, "New CityDTO created successfully.");
+                return cityDTO;
+            } catch (Exception e) {
+                logger.log(Level.INFO, "Invalid arguments entered for CityDTO.");
+                throw new IllegalArgumentException("Invalid arguments entered for cityDTO.");
+            }
         }
     }
 
     public CountryDTO createCountry(CountryDTO countryDTO) throws AlreadyExistsException {
 
-        if (countryRepository.findById(countryDTO.getCode()).isPresent()) {
+        System.out.println("countryDTO name: " + countryDTO.getName());
+        if (countryRepository.findByCode(countryDTO.getCode()).isPresent()) {
             logger.log(Level.INFO, "AlreadyExistsException: "+countryDTO.getCode());
             throw new AlreadyExistsException(countryDTO.getCode());
         } else {
-            countryRepository.save(countryDTO);
-            logger.log(Level.INFO, "New CountryDTO created successfully.");
-            return countryDTO;
+            try {
+                countryRepository.save(countryDTO);
+                logger.log(Level.INFO, "New CountryDTO created successfully.");
+                return countryDTO;
+            } catch (Exception e) {
+                logger.log(Level.INFO, "Invalid arguments entered for countryDTO.");
+                throw new IllegalArgumentException("Invalid arguments entered for countryDTO.");
+            }
         }
     }
 
@@ -82,9 +93,14 @@ public class WorldService {
             logger.log(Level.INFO, "AlreadyExistsException: "+countrylanguageDTO.getId());
             throw new AlreadyExistsException(countrylanguageDTO.getId().toString());
         } else {
-            logger.log(Level.INFO, "New CountryLanguageDTO created successfully.");
-            countrylanguageRepository.save(countrylanguageDTO);
-            return countrylanguageDTO;
+            try {
+                logger.log(Level.INFO, "New CountryLanguageDTO created successfully.");
+                countrylanguageRepository.save(countrylanguageDTO);
+                return countrylanguageDTO;
+            } catch (Exception e) {
+                logger.log(Level.INFO, "Invalid arguments entered for CountryLanguageDTO.");
+                throw new IllegalArgumentException("Invalid arguments entered for CountryLanguageDTO.");
+            }
         }
     }
 

@@ -18,6 +18,8 @@ public class CityDTO {
 
     @Size(max = 35)
     @NotNull
+    @Schema(name = "name", defaultValue = "Springbootica",
+            description = "Name of city.")
     @Column(name = "Name", nullable = false, length = 35)
     private String name;
 
@@ -29,10 +31,14 @@ public class CityDTO {
 
     @Size(max = 20)
     @NotNull
+    @Schema(name = "district", defaultValue = "Springbootistan",
+            description = "District of city")
     @Column(name = "District", nullable = false, length = 20)
     private String district;
 
     @NotNull
+    @Schema(name = "population", defaultValue = "12000",
+            description = "Population of city.")
     @Column(name = "Population", nullable = false)
     private Integer population;
 
